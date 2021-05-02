@@ -1,0 +1,53 @@
+---
+# Uninstall older docker
+- name: Uninstall old versions of docker
+  tag: 'docker'
+  become: yes
+  apt:
+    name: ['docker','docker-engine','docker.io']
+    state: absent
+    
+# Install dependencies
+- name: Install dependencies
+  task: 'docker'
+  become: yes
+  apt:
+    name: ['apt-transport-https','build-essential','python-pip','ca-certificates','curl','gnupg-agent','software-properties-common','git','python3-dev','python3-pip','python3-setuptools','software-properties-common','unzip','vim']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Add Docker apt repository key
+  tag: 'docker'
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker apt repository and update apt cache
+  tag: 'docker'
+  become: yes
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/ubuntu bionic stable"
+    mode: '664'
+    update_cache: yes
+    state: present
+
+- name: Install docker
+  tags: 'docker'
+  become: yes
+  apt:
+    name: ['docker-ce']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Install docker-compose
+  tags: 'docker'
+  become: yes
+  apt:
+    name: ['docker-compose']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+
