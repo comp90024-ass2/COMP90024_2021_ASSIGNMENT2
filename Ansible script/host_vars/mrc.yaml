@@ -3,14 +3,13 @@ availability_zone: melbourne-qh2-uom
 
 # Volume
 volumes:
-  - vol_name: demo-vol-1-1
-    vol_size: 10
-  - vol_name: demo-vol-1-2
-    vol_size: 10
-  - vol_name: demo-vol-2-1
-    vol_size: 10
-  - vol_name: demo-vol-2-2
-    vol_size: 10
+  - vol_name: demo-vol-1
+    vol_size: 15
+  - vol_name: demo-vol-2
+    vol_size: 15
+  - vol_name: demo-vol-3
+    vol_size: 15
+
 
 # Security group
 security_groups:
@@ -29,11 +28,14 @@ security_groups:
 
 # Instance
 instances:
-  - name: demo-1
-    volumes: ['demo-vol-1-1', 'demo-vol-1-2']
-  - name: demo-2
-    volumes: ['demo-vol-2-1', 'demo-vol-2-2']
+  - name: docker master-1
+    volumes: demo-vol-1
+  - name: docker slaves-1
+    volumes: demo-vol-2
+  - name: docker slaves-2
+    volumes: demo-vol-3
+
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
-instance_key_name: cloud-demo
+instance_key_name: cloud-ass2
 instance_flavor: uom.mse.1c4g

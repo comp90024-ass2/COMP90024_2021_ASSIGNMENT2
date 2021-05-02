@@ -33,7 +33,7 @@
 #Add hosts to Ansible in-memory inventory
 - name: Add host
   add_host:
-    name: '{{item.openstack.pulibc_v4}}'
+    name: '{{ item.openstack.public_v4 }}'
     group: COMP90024
-  loop: '{{os_instance.results}}'
+  loop: '{{ os_instance.results }}'
   when: item.openstack is defined

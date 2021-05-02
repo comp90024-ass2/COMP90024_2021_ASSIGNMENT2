@@ -1,3 +1,3 @@
 #!/bin/bash
 
-. ./both-openrc.sh; ansible-playbook mrc.yaml
+. ./both-openrc.sh; ansible-playbook docker_demo.yaml

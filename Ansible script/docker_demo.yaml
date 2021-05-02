@@ -12,8 +12,8 @@
     - role: openstack-instance
     - role: openstack-volume-snapshot
 
--host: COMP90024
-  var_files:
+- hosts: COMP90024
+  vars_files:
     - host_vars/docker_var.yaml
   gather_facts: true
 
@@ -21,4 +21,4 @@
     - role: wp-common
     - role: wp-volumes
     - role: wp-docker
-    - role: wp-wordpress
+ 
