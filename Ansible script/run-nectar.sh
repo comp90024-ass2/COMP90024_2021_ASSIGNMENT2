@@ -1,3 +1,3 @@
 #!/bin/bash
 
-. ./both-openrc.sh; ansible-playbook docker_demo.yaml
+. ./both-openrc.sh; ansible-playbook -i hosts docker_demo.yaml
