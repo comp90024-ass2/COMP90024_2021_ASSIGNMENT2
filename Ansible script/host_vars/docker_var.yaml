@@ -2,8 +2,8 @@
 volumes:
   - device: /dev/vdb
     mountpoint: /var/lib/docker
-  - device: /dev/vdc
-    mountpoint: /data
+  # - device: /dev/vdc
+    # mountpoint: /data
 
 
 #ansible_connection: ssh

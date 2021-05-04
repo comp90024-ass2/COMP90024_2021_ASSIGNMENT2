@@ -19,6 +19,6 @@
 
   roles:
     - role: wp-common
-    - role: wp-volumes
     - role: wp-docker
+    - role: wp-volumes  
  

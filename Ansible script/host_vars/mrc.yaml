@@ -7,8 +7,8 @@ volumes:
     vol_size: 15
   - vol_name: demo-vol-2
     vol_size: 15
-  - vol_name: demo-vol-3
-    vol_size: 15
+  # - vol_name: demo-vol-3
+  #   vol_size: 15
 
 
 # Security group
@@ -29,11 +29,11 @@ security_groups:
 # Instance
 instances:
   - name: docker master-1
-    volumes: demo-vol-1
-  - name: docker slaves-1
-    volumes: demo-vol-2
-  - name: docker slaves-2
-    volumes: demo-vol-3
+    volumes: [demo-vol-1, demo-vol-2]
+  # - name: docker slaves-1
+  #   volumes: demo-vol-2
+  # - name: docker slaves-2
+  #   volumes: demo-vol-3
 
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb

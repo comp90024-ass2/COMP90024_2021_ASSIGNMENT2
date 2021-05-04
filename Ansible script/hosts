@@ -4,5 +4,7 @@
 [COMP90024:vars] 
 ansible_python_interpreter=/usr/bin/python3
 ansible_user=ubuntu
-ansible_ssh_private_key_file=/Users/both/Desktop/MRC/Assignment2/cloud_ass2.key
+ansible_ssh_private_key_file=~/Desktop/cloud_ass2.key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_become_user=root
+ansible_become=true
