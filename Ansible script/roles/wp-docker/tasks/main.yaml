@@ -27,7 +27,7 @@
   tags: 'docker'
   become: yes
   apt_repository:
-    repo: "deb https://download.docker.com/linux/ubuntu bionic stable"
+    repo: "deb https://download.docker.com/linux/ubuntu focal stable"
     mode: '664'
     update_cache: yes
     state: present
