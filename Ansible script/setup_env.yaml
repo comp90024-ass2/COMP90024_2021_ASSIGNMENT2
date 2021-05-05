@@ -1,0 +1,11 @@
+- hosts: setev
+  vars_files:
+    - host_vars/docker_var.yaml
+  gather_facts: true
+
+  roles:
+    - role: env-setup
+    - role: env-common
+    - role: env-docker
+    - role: env-volumes  
+ 

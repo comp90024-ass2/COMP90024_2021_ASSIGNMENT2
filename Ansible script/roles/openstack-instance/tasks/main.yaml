@@ -34,6 +34,7 @@
 - name: Add host
   add_host:
     name: '{{ item.openstack.public_v4 }}'
-    group: COMP90024
+    ansible_host: '{{ item.openstack.public_v4 }}'
+    groups: "{{ item['item']['meta']['group'] }}"
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined

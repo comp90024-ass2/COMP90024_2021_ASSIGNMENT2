@@ -1,10 +1,17 @@
-[COMP90024]
+[websites]
+172.26.128.167 ansible_host=172.26.128.167
+[masterDB]
+172.26.133.65 ansible_host=172.26.133.65
+[slavesDB]
+172.26.132.219 ansible_host=172.26.132.219
+172.26.133.182 ansible_host=172.26.133.182
+[setev]
 
 
-[COMP90024:vars] 
+[setev:vars] 
 ansible_python_interpreter=/usr/bin/python3
 ansible_user=ubuntu
-ansible_ssh_private_key_file=~/Desktop/cloud_ass2.key
+ansible_ssh_private_key_file=~/Desktop/MRC/Assignment2/cloud_ass2.key
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ansible_become_user=root
 ansible_become=true

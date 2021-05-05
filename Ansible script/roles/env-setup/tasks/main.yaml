@@ -1,0 +1,16 @@
+---
+# echo proxy on server
+- name: set up proxy env on instances
+  tags: always
+  become: yes
+  shell: echo {{ item }} >> {{ server_env }}
+  loop: {{ proxy }}
+
+#export the proxy
+- name: set up proxy env on instances
+  tags: always
+  become: yes
+  shell: export {{ item }}
+  loop: {{ proxy }}
+
+
