@@ -27,7 +27,7 @@
   tags: 'docker'
   become: yes
   apt_repository:
-    repo: "deb https://download.docker.com/linux/ubuntu focal stable"
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
     mode: '664'
     update_cache: yes
     state: present
@@ -47,6 +47,27 @@
   pip:
     name: ['docker-compose']
     state: latest
+
+- name: mkdir /etc/systemd/system/docker.service.d
+  tags: 'create proxy directory'
+  become: yes
+  file:
+    path: "{{ docker_env }}"
+    state: directory
+
+- name: move http-proxy.conf
+  tags: 'move http-proxy.conf in server'
+  template:
+    src: http-proxy.conf
+    dest: "{{ docker_env }}"
+
+- name: Restart daemon and docker
+  become: yes
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker
+
 
 
 

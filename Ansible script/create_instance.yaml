@@ -12,7 +12,7 @@
     - role: openstack-instance
 #    - role: openstack-volume-snapshot
 
-#- hosts: COMP90024
+#- hosts: instances
 #  vars_files:
 #    - host_vars/docker_var.yaml
 #  gather_facts: true

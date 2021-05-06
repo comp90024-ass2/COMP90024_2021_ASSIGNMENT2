@@ -1,4 +1,4 @@
-- hosts: setev
+- hosts: instances
   vars_files:
     - host_vars/docker_var.yaml
   gather_facts: true
