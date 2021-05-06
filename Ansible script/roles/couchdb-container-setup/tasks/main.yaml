@@ -1,0 +1,3 @@
+- name: Build CouchDB for master
+  script: ./setup-container.sh '{{ ansible_default_ipv4.address }}'
+  register: outCouchDB

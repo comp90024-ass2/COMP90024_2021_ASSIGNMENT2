@@ -1,0 +1,9 @@
+# Preparing couchdb container
+- hosts: database
+  roles:
+    - role: couchdb-container-setup
+
+# Set up each couchde environ
+- hosts: masterDB
+  roles:
+    - role: couchdb-setup
