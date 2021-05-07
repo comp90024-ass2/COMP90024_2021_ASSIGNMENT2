@@ -52,7 +52,7 @@ if __name__ == "__main__":
     
     geocodes = "-37.8136,144.9631,10mi"
     qword = ""
-    page = 27 # maximum pages we can get within 15min
+    page = 100 # maximum pages we can get within 15min
     date = "2021-04-30"
     current_id = '1387919449697579012'
     timer = 900
