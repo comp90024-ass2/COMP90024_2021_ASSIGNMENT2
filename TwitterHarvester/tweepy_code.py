@@ -36,7 +36,7 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
     # Calling api
     api = tweepy.API(auth)
   
-    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, max_id = current_id, until=date).pages(page)
+    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=date).pages(page)
     for tweets in pages:
         for tweet in tweets:
             tweetstr = json.dumps(tweet._json)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     
     geocodes = "-37.8136,144.9631,10mi"
     qword = ""
-    page = 180 # maximum pages we can get within 15min
+    page = 27 # maximum pages we can get within 15min
     date = "2021-04-30"
     current_id = '1387919449697579012'
     timer = 900
