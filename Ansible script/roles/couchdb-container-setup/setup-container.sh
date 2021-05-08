@@ -21,6 +21,10 @@ fi
 # Create Docker
 echo "Create couchDB......"
 docker create\
+    -p 5984:5984\
+    -p 4369:4369\
+    -p 9100-9200:9100-9200\
+    -p 5986:5986\
     --name couchdb${node}\
     --env COUCHDB_USER=${user}\
     --env COUCHDB_PASSWORD=${pass}\

@@ -1,4 +1,7 @@
-export declare -a nodes=("$1 $2 $3")
+#!/usr/bin/env bash
+
+# declare -a 
+export declare -a nodes=($1 $2 $3)
 export masternode=`echo ${nodes} | cut -f1 -d' '`
 export declare -a othernodes=`echo ${nodes[@]} | sed s/${masternode}//`
 export size=${#nodes[@]}
