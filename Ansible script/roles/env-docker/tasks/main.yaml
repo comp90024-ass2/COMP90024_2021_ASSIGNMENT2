@@ -54,12 +54,16 @@
   file:
     path: "{{ docker_env }}"
     state: directory
+    recurse: yes
+
 
 - name: move http-proxy.conf
   tags: 'move http-proxy.conf in server'
+  become: yes
   template:
     src: http-proxy.conf
     dest: "{{ docker_env }}"
+    
 
 - name: Restart daemon and docker
   become: yes

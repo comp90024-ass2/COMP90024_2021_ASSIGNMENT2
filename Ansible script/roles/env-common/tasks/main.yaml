@@ -20,3 +20,17 @@
   pip:
     name: ['pip']
     state: latest
+
+# pip install tweepy and CouchDB for Twitter Harvester
+- name: Install tweepy
+  pip:
+    name: ['tweepy', 'CouchDB']
+    state: latest
+
+# pip install tweepy and CouchDB for CouchDB
+- name: Install prerequisite for couchDB
+  tags: couchDB
+  become: yes
+  pip:
+    name: ['node','npm','grunt','jq']
+    state: latest

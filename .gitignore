@@ -6,3 +6,6 @@ Ansible script/roles/env-docker/.DS_Store
 Ansible script/roles/openstack-instance/.DS_Store
 .DS_Store
 Ansible script/.DS_Store
+.DS_Store
+Ansible script/roles/env-setup/.DS_Store
+Ansible script/roles/env-setup/.DS_Store

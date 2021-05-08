@@ -6,6 +6,6 @@
   roles:
     - role: env-setup
     - role: env-common
-    - role: env-docker
-    - role: env-volumes  
+    - role: env-volumes 
+    - role: env-docker 
  
