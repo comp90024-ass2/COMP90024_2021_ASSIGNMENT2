@@ -92,7 +92,7 @@ if __name__ == "__main__":
     timer = 900
     
     # run for 20 times
-    for i in range(0, 20):
+    for i in range(0, 40):
         timer = 900
         
         print('time to abstract from ' + date + '. With tweets earlier than: ' + current_id)
