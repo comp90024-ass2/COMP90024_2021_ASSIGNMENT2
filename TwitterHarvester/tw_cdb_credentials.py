@@ -4,4 +4,10 @@ access_token = ""
 access_token_secret = ""
 url = "http://172.26.130.150:5984/"
 login = ('admin', 'admin')
-dbname = 'tweets_data'
+
+#uncomment the database of the city that is gonna be searched
+dbname = 'twitter_melbourne'
+#dbname = 'twitter_sydney'
+#dbname = 'twitter_brisbane'
+#dbname = 'twitter_perth'
+#dbname = 'twitter_adelaide'
