@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 30 17:43:02 2021
 
-@author: cheng
-"""
-  
 import tweepy
 from langdetect import detect
 import couchdb
@@ -34,8 +28,8 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
     # Calling api
     api = tweepy.API(auth)
   
-    #pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=date).pages(page)
-    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, until=date).pages(page)
+    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=date).pages(page)
+    #pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, until=date).pages(page)
     for tweets in pages:
         for tweet in tweets:
             tweetstr = json.dumps(tweet._json)
@@ -64,6 +58,7 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
             db.save(json.loads(json.dumps(text)))
             current_id = tweet.id_str
         print('searching paused')
+        print('current_id' + current_id)
     
 if __name__ == "__main__":
     
@@ -87,14 +82,16 @@ if __name__ == "__main__":
 
     qword = ""
     page = 100 # maximum pages we can get within 15min
-    date = "2021-05-02"
-    current_id = '1387919449697579012'
+    date = "2021-05-03"
+    current_id = '1388805726622175232' # updated 7:13 pm 10/05/2021
     timer = 900
     
-    # run for 20 times
-    for i in range(0, 40):
+    # run for 999 times just in case you forgot to close it
+    for i in range(0, 999):
         timer = 900
-        
+        couch = couchdb.Server(url=tw_cdb_credentials.url)
+        couch.resource.credentials =tw_cdb_credentials.login
+        db = couch[tw_cdb_credentials.dbname]
         print('time to abstract from ' + date + '. With tweets earlier than: ' + current_id)
         get_tweets_query(qword,geocodes,page,date, current_id)
         
