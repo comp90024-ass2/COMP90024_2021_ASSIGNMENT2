@@ -13,6 +13,6 @@ docker_env: /etc/systemd/system/docker.service.d
 # Volume
 volumes:
   - device: /dev/vdb
-    mountpoint: /var/lib/docker
+    mountpoint: /var/lib/react
   
 

@@ -5,7 +5,7 @@
     name: '{{ item.name }}'
     image: '{{ instance_image }}'
     key_name: '{{ instance_key_name }}'
-    flavor: '{{ instance_flavor }}'
+    flavor: '{{ instance_flavor }}' 
     availability_zone: '{{ availability_zone }}'
     security_groups: '{{ sg_names }}'
     volumes: '{{ item.volumes }}'
@@ -38,3 +38,4 @@
     groups: "{{ item['item']['meta']['group'] }}"
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
+
