@@ -40,8 +40,8 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
                     'verified': json_load['user']['verified'],
                     'followers_count': json_load['user']['followers_count'],
                     'friends_count': json_load['user']['friends_count'],}
-            text = {'created_at': json_load['created_at'],
-                    'id_str': json_load['id_str'],
+            text = {'_id': json_load['id_str'],
+                    'created_at': json_load['created_at'],
                      'text': json_load['text'],
                     'source': json_load['source'],
                     'user': user,
@@ -55,7 +55,11 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
                     'entities': json_load['entities'],
                     'lang': json_load['lang'],
                     }
-            db.save(json.loads(json.dumps(text)))
+            try:
+                db.save(json.loads(json.dumps(text)))
+            #continue iteration and ignore duplicate tweet (not saved in db)
+            except couchdb.http.ResourceConflict:
+                print("duplicate tweet")
             current_id = tweet.id_str
         print('searching paused')
         print('current_id' + current_id)
