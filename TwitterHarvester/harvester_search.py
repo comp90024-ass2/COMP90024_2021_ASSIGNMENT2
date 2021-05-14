@@ -1,9 +1,10 @@
 
 import tweepy
-from langdetect import detect
 import couchdb
 import time
 import json
+import logging
+import datetime as DT
 import tw_cdb_credentials
 
 #twitter auth
@@ -25,7 +26,11 @@ couch = couchdb.Server(url=tw_cdb_credentials.url)
 couch.resource.credentials =tw_cdb_credentials.login
 db = couch[tw_cdb_credentials.dbname]
 
-def get_tweets_query(qword,geocodes,page,date, current_id):
+#logfile configuration
+logfile = DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
+logging.basicConfig(filename=logfile, level=logging.INFO)
+
+def get_tweets_query(qword,geocodes,page,datetweet, current_id):
           
     # Authorization to consumer key and consumer secret
     # Calling api
@@ -34,8 +39,7 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
     search_tweets_inserted = 0
     timeline_tweets_inserted = 0
   
-    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=date).pages(page)
-    #pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, until=date).pages(page)
+    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=datetweet).pages(page)
     for tweets in pages:
         for tweet in tweets:
             tweetstr = json.dumps(tweet._json)
@@ -66,7 +70,7 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
             try:
                 db.save(json.loads(json.dumps(text)))
                 search_tweets_inserted = search_tweets_inserted + 1
-                print("save search tweet successful ", last_tweet_id)
+                logging.info("save search tweet successful " + last_tweet_id)
                 #go through user timeline of the tweet from search query result
                 tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
                 for tweet_user in tweets_user:
@@ -94,18 +98,16 @@ def get_tweets_query(qword,geocodes,page,date, current_id):
                     #anticipate duplicate tweets from the user timeline
                     try:
                         db.save(json.loads(json.dumps(text)))
-                        print("save user timeline tweet")
+                        logging.info("save user timeline tweet")
                         timeline_tweets_inserted = timeline_tweets_inserted + 1
                     except couchdb.http.ResourceConflict:
-                        print("duplicate user timeline tweet")
+                        logging.info("duplicate user timeline tweet")
 
             except couchdb.http.ResourceConflict:
-                print("duplicate search tweet")
-                print(last_tweet_id)
-                #sys.exit(1)
-            #current_tweet_id = tweet.id_str
-        print('searching paused')
-        print("Search tweets:", search_tweets_inserted, " timeline tweets:", timeline_tweets_inserted)
+                logging.info("duplicate search tweet")
+                logging.info(last_tweet_id)
+        logging.info('searching paused')
+        logging.info("Search tweets:", search_tweets_inserted, " timeline tweets:", timeline_tweets_inserted)
     return (last_tweet_id,search_tweets_inserted)
 
 if __name__ == "__main__":
@@ -130,18 +132,17 @@ if __name__ == "__main__":
 
     qword = ""
     page = 100 # maximum pages we can get within 15min
-    date = "2021-05-06"
-    #current_tweet_id = '1389369176683278337' # updated 7:13 pm 10/05/2021 
+    datetweet = (DT.date.today() - DT.timedelta(days=7)).strftime("%Y-%m-%d")
     timer = 900
     
     # run for 999 times just in case you forgot to close it
     for i in range(0, 999):
         timer = 900
         
-        print('time to abstract from ' + date + '. With tweets earlier than: ' + current_tweet_id)
-        result = get_tweets_query(qword,geocodes,page,date, current_tweet_id)
+        logging.info('time to abstract from ' + datetweet + '. With tweets earlier than: ' + current_tweet_id)
+        result = get_tweets_query(qword,geocodes,page,datetweet, current_tweet_id)
         current_tweet_id = result[0]
-        print(current_tweet_id)
+        logging.info(current_tweet_id)
 
         if(result[1]==0):
             sys.exit()
@@ -150,4 +151,4 @@ if __name__ == "__main__":
         while timer >= 0:
             time.sleep(1)
             timer -= 1
-    print('searching finished')
+    logging.info('searching finished')
