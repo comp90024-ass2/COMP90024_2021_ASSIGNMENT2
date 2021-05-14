@@ -107,7 +107,7 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                 logging.info("duplicate search tweet")
                 logging.info(last_tweet_id)
         logging.info('searching paused')
-        logging.info("Search tweets:", search_tweets_inserted, " timeline tweets:", timeline_tweets_inserted)
+        logging.info("Search tweets:" + search_tweets_inserted + " timeline tweets:" + timeline_tweets_inserted)
     return (last_tweet_id,search_tweets_inserted)
 
 if __name__ == "__main__":
