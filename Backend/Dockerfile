@@ -11,6 +11,6 @@ COPY requirements.txt requirements.txt
 COPY tw_cdb_credentials.py tw_cdb_credentials.py
 COPY tweepy_code.py tweepy_code.py
 
-RUN sudo pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 CMD [ "python3", "tweepy_code.py"]
