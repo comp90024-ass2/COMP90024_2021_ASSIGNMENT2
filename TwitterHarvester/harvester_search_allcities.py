@@ -17,8 +17,8 @@ access_token_secret = tw_cdb_credentials.access_token_secret
 citycode = 1
 
 # == couchdb ==
-couch = couchdb.Server(url='http://172.26.131.86:5984/')
-couch.resource.credentials = ('admin', 'admin')
+couch = couchdb.Server(url=tw_cdb_credentials.url)
+couch.resource.credentials = tw_cdb_credentials.login
 db = couch['twitter_adelaide']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     qword = ""
     page = 100 # maximum pages we can get within 15min
-    datetweet = (DT.date.today() - DT.timedelta(days=7)).strftime("%Y-%m-%d")
+    datetweet = (DT.date.today() - DT.timedelta(days=6)).strftime("%Y-%m-%d")
     timer = 900
     
     # run for 999 times just in case you forgot to close it
