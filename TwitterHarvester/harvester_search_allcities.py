@@ -23,11 +23,13 @@ api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
 todaytweets = api.search(q="",geocode="-27.48,153,10mi",count=2,until=DT.date.today().strftime("%Y-%m-%d"))
 current_tweet_id = ""
+begin_tweet_id = ""
 
 for todaytweet in todaytweets:
     tweetstr = json.dumps(todaytweet._json)
     json_load = json.loads(tweetstr)
     current_tweet_id = json_load['id_str']
+    begin_tweet_id = json_load['id_str']
 
 logfile = DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
 
@@ -146,18 +148,22 @@ if __name__ == "__main__":
             if(citycode == 2):
                 db = couch['twitter_perth']
                 geocodes = "-31.96,115.85,10mi"
+                current_tweet_id = begin_tweet_id
                 logging.info("PERTH")
             elif(citycode == 3):
                 db = couch['twitter_sydney']
                 geocodes = "-33.8136,151,10mi"
+                current_tweet_id = begin_tweet_id
                 logging.info("SYDNEY")
             elif(citycode == 4):
                 db = couch['twitter_melbourne']
                 geocodes = "-37.8136,144.9631,10mi"
+                current_tweet_id = begin_tweet_id
                 logging.info("MELBOURNE")
             elif(citycode == 5):
                 db = couch['twitter_brisbane']
                 geocodes = "-27.48,153,10mi"
+                current_tweet_id = begin_tweet_id
                 logging.info("BRISBANE")
             else:
                 sys.exit()
