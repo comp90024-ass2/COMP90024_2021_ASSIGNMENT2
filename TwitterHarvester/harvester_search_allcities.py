@@ -16,6 +16,11 @@ access_token_secret = tw_cdb_credentials.access_token_secret
 #1:adelaide, 2:perth, 3:sydney, 4:melbourne, 5:brisbane
 citycode = 1
 
+# == couchdb ==
+couch = couchdb.Server(url='http://172.26.131.86:5984/')
+couch.resource.credentials = ('admin', 'admin')
+db = couch['twitter_adelaide']
+
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
