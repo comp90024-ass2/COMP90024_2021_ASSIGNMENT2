@@ -13,21 +13,24 @@ consumer_secret = tw_cdb_credentials.consumer_secret
 access_token = tw_cdb_credentials.access_token
 access_token_secret = tw_cdb_credentials.access_token_secret
 
+#1:adelaide, 2:perth, 3:sydney, 4:melbourne, 5:brisbane
+citycode = 1
+
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
-#any today's tweet (for example the most recent Scott Morrison tweet)
-current_tweet_id = '1392339238188818437'
+todaytweets = api.search(q="",geocode="-27.48,153,10mi",count=2,until=DT.date.today().strftime("%Y-%m-%d"))
+current_tweet_id = ""
 
-#couchdb connect
-couch = couchdb.Server(url=tw_cdb_credentials.url)
-couch.resource.credentials =tw_cdb_credentials.login
-db = couch[tw_cdb_credentials.dbname]
+for todaytweet in todaytweets:
+    tweetstr = json.dumps(todaytweet._json)
+    json_load = json.loads(tweetstr)
+    current_tweet_id = json_load['id_str']
 
-#logfile configuration
 logfile = DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
+
 logging.basicConfig(filename=logfile, level=logging.INFO)
 
 def get_tweets_query(qword,geocodes,page,datetweet, current_id):
@@ -39,7 +42,12 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
     search_tweets_inserted = 0
     timeline_tweets_inserted = 0
   
-    pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=datetweet).pages(page)
+    try:
+        pages = tweepy.Cursor(api.search, q=qword, geocode=geocodes, count=100, max_id = current_id, until=datetweet).pages(page)
+
+    except IncompleteRead:
+        logging.warning("Incomplete Read")
+
     for tweets in pages:
         for tweet in tweets:
             tweetstr = json.dumps(tweet._json)
@@ -66,7 +74,6 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                     'lang': json_load['lang'],
                     }
             last_tweet_id = tweet.id_str
-            #anticipate duplicate tweets from the search result
             try:
                 db.save(json.loads(json.dumps(text)))
                 search_tweets_inserted = search_tweets_inserted + 1
@@ -95,7 +102,6 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                             'entities': json_load['entities'],
                             'lang': json_load['lang'],
                             }
-                    #anticipate duplicate tweets from the user timeline
                     try:
                         db.save(json.loads(json.dumps(text)))
                         logging.info("save user timeline tweet")
@@ -106,29 +112,20 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
             except couchdb.http.ResourceConflict:
                 logging.info("duplicate search tweet")
                 logging.info(last_tweet_id)
+                #sys.exit(1)
+            #current_tweet_id = tweet.id_str
         logging.info('searching paused')
-        logging.info("Search tweets:" + search_tweets_inserted + " timeline tweets:" + timeline_tweets_inserted)
+        logging.info("Search tweets:" + str(search_tweets_inserted) + " timeline tweets:" + str(timeline_tweets_inserted))
     return (last_tweet_id,search_tweets_inserted)
 
 if __name__ == "__main__":
     
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
-    
-    #Melbourne
-    #geocodes = "-37.8136,144.9631,10mi"
-
-    #Sydney
-    #geocodes = "-33.8136,151,10mi"
-
-    #Brisbane
-    #geocodes = "-27.48,153,10mi"
-
-    #Perth
-    geocodes = "-31.96,115.85,10mi"
 
     #Adelaide
-    #geocodes = "-34.917,138.6,10mi"
+    geocodes = "-34.917,138.6,10mi"
+    logging.info("ADELAIDE")
 
     qword = ""
     page = 100 # maximum pages we can get within 15min
@@ -145,8 +142,26 @@ if __name__ == "__main__":
         logging.info(current_tweet_id)
 
         if(result[1]==0):
-            sys.exit()
-                    
+            citycode = citycode + 1
+            if(citycode == 2):
+                db = couch['twitter_perth']
+                geocodes = "-31.96,115.85,10mi"
+                logging.info("PERTH")
+            elif(citycode == 3):
+                db = couch['twitter_sydney']
+                geocodes = "-33.8136,151,10mi"
+                logging.info("SYDNEY")
+            elif(citycode == 4):
+                db = couch['twitter_melbourne']
+                geocodes = "-37.8136,144.9631,10mi"
+                logging.info("MELBOURNE")
+            elif(citycode == 5):
+                db = couch['twitter_brisbane']
+                geocodes = "-27.48,153,10mi"
+                logging.info("BRISBANE")
+            else:
+                sys.exit()
+
         # make call after 15min
         while timer >= 0:
             time.sleep(1)
