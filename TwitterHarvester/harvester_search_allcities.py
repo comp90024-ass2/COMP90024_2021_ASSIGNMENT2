@@ -39,6 +39,7 @@ for todaytweet in todaytweets:
 logfile = DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
 
 logging.basicConfig(filename=logfile, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 def get_tweets_query(qword,geocodes,page,datetweet, current_id):
           
