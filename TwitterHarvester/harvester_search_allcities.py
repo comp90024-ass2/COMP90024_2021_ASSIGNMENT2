@@ -13,7 +13,7 @@ consumer_secret = tw_cdb_credentials.consumer_secret
 access_token = tw_cdb_credentials.access_token
 access_token_secret = tw_cdb_credentials.access_token_secret
 
-#1:adelaide, 2:perth, 3:sydney, 4:melbourne, 5:brisbane
+#1:perth, 2:sydney, 3:melbourne, 4:brisbane, 5:adelaide
 citycode = 1
 
 # == couchdb ==
