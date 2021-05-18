@@ -6,6 +6,7 @@ import json
 import logging
 import datetime as DT
 import tw_cdb_credentials
+import sys
 
 #twitter auth
 consumer_key = tw_cdb_credentials.consumer_key
