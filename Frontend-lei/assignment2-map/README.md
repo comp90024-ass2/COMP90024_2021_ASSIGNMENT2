@@ -39,14 +39,14 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 
 ## JSON file format
-**Note: each file has its unique column names in "properties" section **
+**Note: each file has its unique column names in "properties" section**
 
-For NT section: it is
+For NT section: 
                 "nt_state_": "2006-01-12Z",
                 "nt_state_1": null,
                 "nt_state_2": "NORTHERN TERRITORY",
                 "nt_state_3": "NT"
-                or,
+               	*or*
                 "nt_lga_sh":"2016-05-25Z",
                 "nt_lga_s_1":null,
                 "nt_lga_s_2":"EAST ARNHEM REGION",
@@ -59,7 +59,7 @@ For VIC section: it is
                 "vic_state_1": null,
                 "vic_state_2": "NORTHERN TERRITORY",
                 "vic_state_3": "NT"
-                or,
+                *or*
                 "vic_lga_sh":"2016-05-25Z",
                 "vic_lga_s_1":null,
                 "vic_lga_s_2":"EAST ARNHEM REGION",
