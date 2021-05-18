@@ -41,175 +41,175 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## JSON file format
 **Note: each file has its unique column names in "properties" section**
 
-For NT section: 
-                "nt_state_": "2006-01-12Z",
-                "nt_state_1": null,
-                "nt_state_2": "NORTHERN TERRITORY",
-                "nt_state_3": "NT"
-               	*or*
-                "nt_lga_sh":"2016-05-25Z",
-                "nt_lga_s_1":null,
-                "nt_lga_s_2":"EAST ARNHEM REGION",
-                "nt_lga_s_3":"EAST ARNHEM",
-                "nt_lga_s_4":null,
-                "nt_lga_s_5":"7"
+For NT section: <br />
+                "nt_state_": "2006-01-12Z",<br />
+                "nt_state_1": null,<br />
+                "nt_state_2": "NORTHERN TERRITORY",<br />
+                "nt_state_3": "NT"<br />
+               	*or*<br />
+                "nt_lga_sh":"2016-05-25Z",<br />
+                "nt_lga_s_1":null,<br />
+                "nt_lga_s_2":"EAST ARNHEM REGION",<br />
+                "nt_lga_s_3":"EAST ARNHEM",<br />
+                "nt_lga_s_4":null,<br />
+                "nt_lga_s_5":"7"<br />
 
-For VIC section: it is
-                "vic_state_": "2006-01-12Z",
-                "vic_state_1": null,
-                "vic_state_2": "NORTHERN TERRITORY",
-                "vic_state_3": "NT"
-                *or*
-                "vic_lga_sh":"2016-05-25Z",
-                "vic_lga_s_1":null,
-                "vic_lga_s_2":"EAST ARNHEM REGION",
-                "vic_lga_s_3":"EAST ARNHEM",
-                "vic_lga_s_4":null,
-                "vic_lga_s_5":"7"
+For VIC section: <br />
+                "vic_state_": "2006-01-12Z",<br />
+                "vic_state_1": null,<br />
+                "vic_state_2": "NORTHERN TERRITORY",<br />
+                "vic_state_3": "NT"<br />
+                *or*<br />
+                "vic_lga_sh":"2016-05-25Z",<br />
+                "vic_lga_s_1":null,<br />
+                "vic_lga_s_2":"EAST ARNHEM REGION",<br />
+                "vic_lga_s_3":"EAST ARNHEM",<br />
+                "vic_lga_s_4":null,<br />
+                "vic_lga_s_5":"7"<br />
 
 other files as follows...
 
 **Aus_state.json file Structure**
 
-{
-	"features": [
-		{
-			"type": "Feature",
-			"id": "xxxx_xxxxxxxx_xxxx_xxxx_xxxx_xxxxxxxxxxxx.x",
-			"geometry": {
-				"type": "MultiPolygon",
-				"coordinates": [
-					[
-						[
-							[ xxx.xxx,-xx.xxx ],
-							[ xxx.xxx,-xx.xxx ],
-							.
-							.
-							[ xxx.xxx,-xx.xxx ]
-						]
-					]
-				]
-			},
-            "geometry_name": "geom",
-            "properties": {
-                "st_ply_pid": "3076",
-                "dt_create": "2006-01-12Z",
-                "dt_retire": null,
-                "state_pid": "7",
-                "nt_state_": "2006-01-12Z",
-                "nt_state_1": null,
-                "nt_state_2": "NORTHERN TERRITORY",
-                "nt_state_3": "NT"
-            }
-		},
-		.
-		.
-		.
-	]
-}
+{<br />
+	"features": [<br />
+		{<br />
+			"type": "Feature",<br />
+			"id": "xxxx_xxxxxxxx_xxxx_xxxx_xxxx_xxxxxxxxxxxx.x",<br />
+			"geometry": {<br />
+				"type": "MultiPolygon",<br />
+				"coordinates": [<br />
+					[<br />
+						[<br />
+							[ xxx.xxx,-xx.xxx ],<br />
+							[ xxx.xxx,-xx.xxx ],<br />
+							.<br />
+							.<br />
+							[ xxx.xxx,-xx.xxx ]<br />
+						]<br />
+					]<br />
+				]<br />
+			},<br />
+            "geometry_name": "geom",<br />
+            "properties": {<br />
+                "st_ply_pid": "3076",<br />
+                "dt_create": "2006-01-12Z",<br />
+                "dt_retire": null,<br />
+                "state_pid": "7",<br />
+                "nt_state_": "2006-01-12Z",<br />
+                "nt_state_1": null,<br />
+                "nt_state_2": "NORTHERN TERRITORY",<br />
+                "nt_state_3": "NT"<br />
+            }<br />
+		},<br />
+		.<br />
+		.<br />
+		.<br />
+	]<br />
+}<br />
 
 **source state level json file structure**
 
-{
-	"type": "FeatureCollection",
-	"features": [
-		{
-			"type": "Feature",
-			"id": "xxxx_xxxxxxxx_xxxx_xxxx_xxxx_xxxxxxxxxxxx.x",
-			"geometry": {
-				"type": "MultiPolygon",
-				"coordinates": [
-					[
-						[
-							[ xxx.xxx,-xx.xxx ],
-							[ xxx.xxx,-xx.xxx ],
-							.
-							.
-							.
-						]
-					]
-				]
-			},
-            "geometry_name": "geom",
-            "properties":{
-                "st_ply_pid": "3076",
-                "dt_create": "2006-01-12Z",
-                "dt_retire": null,
-                "state_pid": "7",
-                "nt_state_": "2006-01-12Z",
-                "nt_state_1": null,
-                "nt_state_2": "NORTHERN TERRITORY",
-                "nt_state_3": "NT"
-            }
-		},
-        .
-        .
-        .	
-	],
-    "totalFeatures": 781,
-    "numberMatched": 781,
-    "numberReturned": 781,
-    "timeStamp": "2021-05-18T11:14:38.935Z",
-    "crs": {
-        "type": "name",
-        "properties": {
-            "name": "urn:ogc:def:crs:EPSG::4283"
-        }
-    }
-}
+{<br />
+	"type": "FeatureCollection",<br />
+	"features": [<br />
+		{<br />
+			"type": "Feature",<br />
+			"id": "xxxx_xxxxxxxx_xxxx_xxxx_xxxx_xxxxxxxxxxxx.x",<br />
+			"geometry": {<br />
+				"type": "MultiPolygon",<br />
+				"coordinates": [<br />
+					[<br />
+						[<br />
+							[ xxx.xxx,-xx.xxx ],<br />
+							[ xxx.xxx,-xx.xxx ],<br />
+							.<br />
+							.<br />
+							.<br />
+						]<br />
+					]<br />
+				]<br />
+			},<br />
+            "geometry_name": "geom",<br />
+            "properties":{<br />
+                "st_ply_pid": "3076",<br />
+                "dt_create": "2006-01-12Z",<br />
+                "dt_retire": null,<br />
+                "state_pid": "7",<br />
+                "nt_state_": "2006-01-12Z",<br />
+                "nt_state_1": null,<br />
+                "nt_state_2": "NORTHERN TERRITORY",<br />
+                "nt_state_3": "NT"<br />
+            }<br />
+		},<br />
+        .<br />
+        .<br />
+        .<br />
+	],<br />
+    "totalFeatures": 781,<br />
+    "numberMatched": 781,<br />
+    "numberReturned": 781,<br />
+    "timeStamp": "2021-05-18T11:14:38.935Z",<br />
+    "crs": {<br />
+        "type": "name",<br />
+        "properties": {<br />
+            "name": "urn:ogc:def:crs:EPSG::4283"<br />
+        }<br />
+    }<br />
+}<br />
 
 **lga level json file structure**
 
-{
-    "type":"FeatureCollection",
-    "features":[
-        {
-            "type":"Feature",
-            "id":"ckan_225a1af2_9b93_4162_9fe6_11e165255942.1",
-            "geometry":{
-                "type":"MultiPolygon",
-                "coordinates":[
-                    [
-                        [
-                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ],
-                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ],
-                            .
-                            .
-                            .
-                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ]
-                        ]
-                    ]
-                ]
-            },
-            "geometry_name":"geom",
-            "properties":{
-                "lg_ply_pid":"2178",
-                "dt_create":"2016-05-25Z",
-                "dt_retire":null,
-                "lga_pid":"NT93",
-                "nt_lga_sh":"2016-05-25Z",
-                "nt_lga_s_1":null,
-                "nt_lga_s_2":"EAST ARNHEM REGION",
-                "nt_lga_s_3":"EAST ARNHEM",
-                "nt_lga_s_4":null,
-                "nt_lga_s_5":"7"
-            }
-        },
-        .
-        .
-        .
-    ],
-    "totalFeatures":812,
-    "numberMatched":812,
-    "numberReturned":812,
-    "timeStamp":"2021-05-18T11:44:38.173Z",
-    "crs":{
-        "type":"name",
-        "properties":{
-            "name":"urn:ogc:def:crs:EPSG::4283"
-        }
-    }
-}
+{<br />
+    "type":"FeatureCollection",<br />
+    "features":[<br />
+        {<br />
+            "type":"Feature",<br />
+            "id":"ckan_225a1af2_9b93_4162_9fe6_11e165255942.1",<br />
+            "geometry":{<br />
+                "type":"MultiPolygon",<br />
+                "coordinates":[<br />
+                    [<br />
+                        [<br />
+                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ],<br />
+                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ],<br />
+                            .<br />
+                            .<br />
+                            .<br />
+                            [ xxx.xxxxxxxx,-xx.xxxxxxxx ]<br />
+                        ]<br />
+                    ]<br />
+                ]<br />
+            },<br />
+            "geometry_name":"geom",<br />
+            "properties":{<br />
+                "lg_ply_pid":"2178",<br />
+                "dt_create":"2016-05-25Z",<br />
+                "dt_retire":null,<br />
+                "lga_pid":"NT93",<br />
+                "nt_lga_sh":"2016-05-25Z",<br />
+                "nt_lga_s_1":null,<br />
+                "nt_lga_s_2":"EAST ARNHEM REGION",<br />
+                "nt_lga_s_3":"EAST ARNHEM",<br />
+                "nt_lga_s_4":null,<br />
+                "nt_lga_s_5":"7"<br />
+            }<br />
+        },<br />
+        .<br />
+        .<br />
+        .<br />
+    ],<br />
+    "totalFeatures":812,<br />
+    "numberMatched":812,<br />
+    "numberReturned":812,<br />
+    "timeStamp":"2021-05-18T11:44:38.173Z",<br />
+    "crs":{<br />
+        "type":"name",<br />
+        "properties":{<br />
+            "name":"urn:ogc:def:crs:EPSG::4283"<br />
+        }<br />
+    }<br />
+}<br />
 
 ## Learn More
 
