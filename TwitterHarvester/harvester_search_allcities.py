@@ -19,7 +19,7 @@ citycode = 1
 # == couchdb ==
 couch = couchdb.Server(url=tw_cdb_credentials.url)
 couch.resource.credentials = tw_cdb_credentials.login
-db = couch['twitter_adelaide']
+db = couch['twitter_perth']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -56,8 +56,13 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
     except IncompleteRead:
         logging.warning("Incomplete Read")
 
+    page = 0
+    tweetnumber = 0
+
     for tweets in pages:
+        page = page + 1
         for tweet in tweets:
+            tweetnumber = tweetnumber + 1
             tweetstr = json.dumps(tweet._json)
             json_load = json.loads(tweetstr)
             user = {'id_str': json_load['user']['id_str'],
@@ -74,8 +79,6 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                     'geo': json_load['geo'],
                     'coordinates': json_load['coordinates'],
                     'place': json_load['place'],
-                    #'quote_count': json_load['quote_count'],
-                    #'reply_count': json_load['reply_count'],
                     'retweet_count': json_load['retweet_count'],
                     'favorite_count': json_load['favorite_count'],
                     'entities': json_load['entities'],
@@ -87,7 +90,7 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                 search_tweets_inserted = search_tweets_inserted + 1
                 logging.info("save search tweet successful " + last_tweet_id)
                 #go through user timeline of the tweet from search query result
-                tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=5,max_id=json_load['id_str'])
                 for tweet_user in tweets_user:
                     tweetstr = json.dumps(tweet_user._json)
                     json_load = json.loads(tweetstr)
@@ -116,14 +119,13 @@ def get_tweets_query(qword,geocodes,page,datetweet, current_id):
                         timeline_tweets_inserted = timeline_tweets_inserted + 1
                     except couchdb.http.ResourceConflict:
                         logging.info("duplicate user timeline tweet")
-
             except couchdb.http.ResourceConflict:
                 logging.info("duplicate search tweet")
                 logging.info(last_tweet_id)
-                #sys.exit(1)
-            #current_tweet_id = tweet.id_str
-        logging.info('searching paused')
-        logging.info("Search tweets:" + str(search_tweets_inserted) + " timeline tweets:" + str(timeline_tweets_inserted))
+        logging.info('Page:' + str(page) + " Tweet number:" + str(tweetnumber))
+    currenttime = time.time()
+    logging.info('searching paused 15 minutes')
+    logging.info("Search tweets:" + str(search_tweets_inserted) + " timeline tweets:" + str(timeline_tweets_inserted) + " Runtime of the program is: " + str(DT.timedelta(seconds=currenttime-starttime)))
     return (last_tweet_id,search_tweets_inserted)
 
 if __name__ == "__main__":
@@ -131,46 +133,59 @@ if __name__ == "__main__":
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
 
+    starttime = time.time()
+
     #Adelaide
-    geocodes = "-34.917,138.6,10mi"
-    logging.info("ADELAIDE")
+    geocodes = "-31.96,115.85,10mi"
+    logging.info("SYDNEY")
 
     qword = ""
-    page = 100 # maximum pages we can get within 15min
+    page = 99 # maximum pages we can get within 15min
     datetweet = (DT.date.today() - DT.timedelta(days=6)).strftime("%Y-%m-%d")
     timer = 900
     
     # run for 999 times just in case you forgot to close it
     for i in range(0, 999):
-        timer = 900
+        cityname = ""
+
+        if citycode == 5:
+            cityname = "Adelaide"
+        elif citycode == 1:
+            cityname = "Perth"
+        elif citycode == 2:
+            cityname = "Sydney"
+        elif citycode == 3:
+            cityname = "Melbourne"
+        elif citycode == 4:
+            cityname = "Brisbane"
         
-        logging.info('time to abstract from ' + datetweet + '. With tweets earlier than: ' + current_tweet_id)
+        logging.info("query number:" + str(i) + ' time to abstract ' + cityname + ' tweets from ' + datetweet + '. With tweets earlier than: ' + current_tweet_id)
         result = get_tweets_query(qword,geocodes,page,datetweet, current_tweet_id)
         current_tweet_id = result[0]
-        logging.info(current_tweet_id)
+        logging.info("Tweet #" + current_tweet_id + " Tweets inserted:" + str(result[1]))
 
         if(result[1]==0):
             citycode = citycode + 1
-            if(citycode == 2):
-                db = couch['twitter_perth']
-                geocodes = "-31.96,115.85,10mi"
-                current_tweet_id = begin_tweet_id
-                logging.info("PERTH")
-            elif(citycode == 3):
+            if citycode == 2:
                 db = couch['twitter_sydney']
                 geocodes = "-33.8136,151,10mi"
                 current_tweet_id = begin_tweet_id
                 logging.info("SYDNEY")
-            elif(citycode == 4):
+            elif citycode == 3:
                 db = couch['twitter_melbourne']
                 geocodes = "-37.8136,144.9631,10mi"
                 current_tweet_id = begin_tweet_id
                 logging.info("MELBOURNE")
-            elif(citycode == 5):
+            elif citycode == 4:
                 db = couch['twitter_brisbane']
                 geocodes = "-27.48,153,10mi"
                 current_tweet_id = begin_tweet_id
                 logging.info("BRISBANE")
+            elif citycode == 5:
+                db = couch['twitter_adelaide']
+                geocodes = "-34.917,138.6,10mi"
+                current_tweet_id = begin_tweet_id
+                logging.info("ADELAIDE")
             else:
                 sys.exit()
 
