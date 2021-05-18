@@ -6,7 +6,7 @@ import LoadCountriesTask from "../tasks/LoadCountriesTask";
 import Legend from "./Legend";
 import legendItems from "../entities/LegendItems";
 
-const Happy19 = () => {
+const Happy = () => {
   const [countries, setCountries] = useState([]);
 
   const legendItemsReverse = [...legendItems].reverse();

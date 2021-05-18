@@ -1,8 +1,7 @@
 import papa from "papaparse";
 import legendItems from "../entities/LegendItems";
-import { features } from "../data/countries.json";
-//import { features } from "../data/australiaJson.json"
-//    this.setState(features);
+//import { features } from "../data/countries.json";
+import { features } from "../data/state/AUS_state.json"
 
 class LoadCountryTask {
   url =
@@ -23,7 +22,6 @@ class LoadCountryTask {
   #processData = (happyCountries) => {
     for (let i = 0; i < features.length; i++) {
       const country = features[i];
-      //console.log(country);
       const happyCountry = happyCountries.find(
         (happyCountry) => country.properties.ISO_A3 === happyCountry.ISO3
       );
