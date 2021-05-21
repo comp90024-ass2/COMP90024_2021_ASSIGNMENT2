@@ -1,0 +1,8 @@
+---
+
+#set up cron path
+cron_env: /etc/cron.d
+harvester_path: harvester
+
+  
+
