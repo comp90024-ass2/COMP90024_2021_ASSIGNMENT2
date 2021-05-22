@@ -1,22 +1,26 @@
 import React from "react";
-import "./App.css";
-import Happy from "./components/Happy";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
 } from "react-router-dom";
-import BarHappy from "./components/BarHappy";
-import BarIncome from "./components/BarIncome";
-import BarUnemployment from "./components/BarUnemployment";
-import BarSpent from "./components/BarSpent";
+import "./App.css";
+import Happy from "./components/map/Happy";
+import Income from "./components/map/Income";
+import Unemployment from "./components/map/Unemployment";
+import Spent from "./components/map/Spent";
+
+import BarHappy from "./components/barchart/BarHappy";
+import BarIncome from "./components/barchart/BarIncome";
+import BarUnemployment from "./components/barchart/BarUnemployment";
+import BarSpent from "./components/barchart/BarSpent";
 
 function App() {
   return (
     <Router>
         <div>
-            <nav>
+            <nav id="chart">
                 <ul>
                     <li>
                         <label>Bar Chart: </label>
@@ -37,7 +41,16 @@ function App() {
                         <label>Map: </label>
                     </li>
                     <li>
-                        <Link to="/map">Map</Link>
+                        <Link to="/h-map">Happiness</Link>
+                    </li>
+                    <li>
+                        <Link to="/i-map">Income</Link>
+                    </li>
+                    <li>
+                        <Link to="/u-map">Unemployment</Link>
+                    </li>
+                    <li>
+                        <Link to="/s-map">Spent</Link>
                     </li>
                 </ul>
             </nav>
@@ -73,8 +86,17 @@ function App() {
                         <BarSpent />
                     </div>
                 </Route>
-                <Route path="/map">
+                <Route path="/h-map">
                     <Happy />
+                </Route>
+                <Route path="/i-map">
+                    <Income />
+                </Route>
+                <Route path="/u-map">
+                    <Unemployment />
+                </Route>
+                <Route path="/s-map">
+                    <Spent />
                 </Route>
             </Switch>
         </div>

@@ -4,12 +4,12 @@ import './BarChart.css';
 
 const margin = {
     top: 20,
-    right: 0,
+    right: 50,
     bottom: 30,
     left: 100
 };
 
-const WIDTH = 600;
+const WIDTH = 800;
 const HEIGHT = 300;
 
 const data = [

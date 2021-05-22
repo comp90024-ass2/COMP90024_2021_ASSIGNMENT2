@@ -6,17 +6,18 @@ div {
     text-align: center;
 }
 
-nav {
-    margin: 25px;
+#chart {
+    margin: 0;
     background: #f9f9f9;
     padding: 10px;
 }
-ul {
+
+#chart ul {
     display: flex;
     list-style: none;
 }
 
-li {
+#chart li {
     margin: 12px 12px 0 12px;
 }
 

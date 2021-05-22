@@ -4,38 +4,38 @@ import './BarChart.css';
 
 const margin = {
     top: 20,
-    right: 0,
+    right: 50,
     bottom: 30,
     left: 100
 };
 
-const WIDTH = 600;
+const WIDTH = 800;
 const HEIGHT = 300;
 
 const data = [
     {
         x: "Melbourne",
-        y: 12
+        y: 3200
     },
     {
         x: "Sydney",
-        y: 15
+        y: 2000
     },
     {
         x: "Brisbane",
-        y: 20
+        y: 2500
     },
     {
         x: "Perth",
-        y: 13
+        y: 1900
     },
     {
         x: "Adelaide",
-        y: 13
+        y: 2900
     }
 ];
 
-function BarUnemployment() {
+function BarIncome() {
     const chartWidth = WIDTH - margin.left - margin.right;
     const chartHeight = HEIGHT - margin.top - margin.bottom;
 
@@ -165,5 +165,5 @@ function BarUnemployment() {
     );
 }
 
-export default BarUnemployment;
+export default BarIncome;
 
