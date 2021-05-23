@@ -10,8 +10,10 @@ import tw_cdb_credentials
 
 couch = couchdb.Server(url=tw_cdb_credentials.url)
 couch.resource.credentials = tw_cdb_credentials.login
-db = couch['twitter_melbourne']
-db2 = couch['twitter_re5']
+#the location of raw twitter data with original json structure
+db = couch['twitter_raw']
+#the location of twitter data with additional variable and modified json structure
+db2 = couch['twitter_re']
 
 logfile = "Restructure " + datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
 
