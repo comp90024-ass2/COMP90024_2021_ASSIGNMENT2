@@ -21,7 +21,7 @@ citycode = 1
 # == couchdb ==
 couch = couchdb.Server(url=tw_cdb_credentials.url)
 couch.resource.credentials = tw_cdb_credentials.login
-db = couch['twitter_melbourne']
+db = couch['twitter_raw']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -179,7 +179,6 @@ if __name__ == "__main__":
         
         citycode = citycode + 1
         if citycode % 5 == 0:
-            db = couch['twitter_perth']
             geocodes = "-31.96,115.85,10mi"
             logging.info("PERTH")
             lasttweetidp = current_tweet_id
@@ -191,7 +190,6 @@ if __name__ == "__main__":
                 zeroresultcounta = zeroresultcounta + 1
                 logging.info("Zero search result Adelaide")
         elif citycode % 5 == 2:
-            db = couch['twitter_brisbane']
             geocodes = "-27.48,153,10mi"
             logging.info("BRISBANE")
             lasttweetidb = current_tweet_id
@@ -203,7 +201,6 @@ if __name__ == "__main__":
                 zeroresultcountm = zeroresultcountm + 1
                 logging.info("Zero search result Melbourne")
         elif citycode % 5 == 3:
-            db = couch['twitter_sydney']
             geocodes = "-33.8136,151,10mi"
             logging.info("SYDNEY")
             lasttweetids = current_tweet_id
@@ -215,7 +212,6 @@ if __name__ == "__main__":
                 zeroresultcountb = zeroresultcountb + 1
                 logging.info("Zero search result Brisbane")
         elif citycode % 5 == 4:
-            db = couch['twitter_adelaide']
             geocodes = "-34.917,138.6,10mi"
             logging.info("ADELAIDE")
             lasttweetida = current_tweet_id
@@ -227,7 +223,6 @@ if __name__ == "__main__":
                 zeroresultcounts = zeroresultcounts + 1
                 logging.info("Zero search result Sydney")
         elif citycode % 5 == 1:
-            db = couch['twitter_melbourne']
             geocodes = "-37.8136,144.9631,10mi"
             logging.info("MELBOURNE")
             lasttweetidm = current_tweet_id
