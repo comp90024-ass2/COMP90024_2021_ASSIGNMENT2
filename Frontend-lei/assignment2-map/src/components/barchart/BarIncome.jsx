@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import './BarChart.css';
+import request from '../../utils/request'
+// const axios = require('axios');
 
 const margin = {
     top: 20,
@@ -14,26 +16,36 @@ const HEIGHT = 300;
 
 const data = [
     {
-        x: "Melbourne",
+        x: "Melbourne (C)",
         y: 3200
     },
     {
-        x: "Sydney",
+        x: "Sydney (C)",
         y: 2000
     },
     {
-        x: "Brisbane",
+        x: "Brisbane (C)",
         y: 2500
     },
     {
-        x: "Perth",
+        x: "Adelaide (C)",
         y: 1900
     },
     {
-        x: "Adelaide",
+        x: "Perth (C)",
         y: 2900
     }
 ];
+//const data2 = () => request.get('/income_cities/_all_docs')
+const data2 = () => request.post('http://172.26.131.86:5984/income_cities/_find', {
+	"selector": {
+       
+    },
+    "fields": ["lga_name16", "mean_aud" ],
+    "limit": 10,
+    "skip": 0,
+    "execution_stats": true
+})
 
 function BarIncome() {
     const chartWidth = WIDTH - margin.left - margin.right;
@@ -43,21 +55,73 @@ function BarIncome() {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        const t = d3.transition().duration(1000);
-
-        t.tween("height", () => {
-            let interpolates = data.map((d, i) => {
-                let start = (value[i] && value[i].y) || 0;
-                return d3.interpolateNumber(start, d.y);
+        // const t = d3.transition().duration(1000);
+        // let data5 = {}
+        data2().then(response => {
+            const t = d3.transition().duration(1000);
+            // console.log(response.data.docs)
+            let data3 = []
+            response.data.docs.forEach(element => {
+                console.log(element.lga_name16)
+                console.log(element.mean_aud)
+                data3.push({
+                    x: element.lga_name16,
+                    y: element.mean_aud
+                })
             });
-            return t => {
-                let newData = data.map((d, i) => {
-                    return { ...d, y: interpolates[i](t) };
-                });
+            console.log(data3)
 
-                setValue(newData);
-            };
-        });
+            t.tween("height", () => {
+                let interpolates = data3.map((d, i) => {
+                    let start = (value[i] && value[i].y) || 0;
+                    return d3.interpolateNumber(start, d.y);
+                });
+                return t => {
+                    let newData = data3.map((d, i) => {
+                        return { ...d, y: interpolates[i](t) };
+                    });
+
+                    setValue(newData);
+                };
+            });
+
+
+            // for(let doc in response.data.docs){
+            //     console.log(doc)
+            //     // data3.push({x: doc.})
+            // }
+            // t.tween("height", () => {
+            // let interpolates = response.data.docs.map((d, i) => {
+                
+            //     let start = (value[i] && value[i].y) || 0;
+            //     console.log(value[i].y)
+            //     return d3.interpolateNumber(start, d.mean_aud);
+            // });
+            // return t => {
+            //     let newData = response.data.docs.map((d, i) => {
+            //         console.log(d)
+            //         return { ...d, y: interpolates[i](t) };
+            //     });
+            //     setValue(newData);
+            // };
+        // });
+            
+        }).catch((err) =>{
+            console.log(err)
+          })
+        // t.tween("height", () => {
+        //     let interpolates = data.map((d, i) => {
+        //         let start = (value[i] && value[i].y) || 0;
+        //         return d3.interpolateNumber(start, d.y);
+        //     });
+        //     return t => {
+        //         let newData = data.map((d, i) => {
+        //             return { ...d, y: interpolates[i](t) };
+        //         });
+
+        //         setValue(newData);
+        //     };
+        // });
     }, []);
 
     const xScale = d3
@@ -72,10 +136,10 @@ function BarIncome() {
 
     const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(data.map(d => d.y))])
+        .domain([0, 100000])
         .range([chartHeight, 0])
         .nice();
-
+    // return (<div>test</div>)
     return (
         <svg width={WIDTH} height={HEIGHT} ref={svgRef}>
             <linearGradient id="linear-gradient" x1={0} x2={0} y1={1} y2={0}>

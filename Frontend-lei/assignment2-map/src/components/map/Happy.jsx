@@ -4,7 +4,8 @@ import Loading from "./Loading";
 import HappyMap from "./HappyMap";
 import LoadTask from "../../tasks/LoadTask";
 import Legend from "./Legend";
-import h_legendItems from "../../entities/H_LegendItems";
+import h_legendItems from "../../entities/h_LegendItems";
+// ../../entities/H_LegendItems
 import {Map} from "react-leaflet";
 
 const Happy = () => {

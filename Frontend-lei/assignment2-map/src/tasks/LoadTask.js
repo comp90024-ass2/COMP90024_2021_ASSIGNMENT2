@@ -1,5 +1,5 @@
 import papa from "papaparse";
-import h_legendItems from "../entities/H_LegendItems";
+import h_legendItems from "../entities/h_LegendItems";
 import i_legendItems from "../entities/I_LegendItems";
 import u_legendItems from "../entities/U_LegendItems";
 import s_legendItems from "../entities/S_LegendItems";
