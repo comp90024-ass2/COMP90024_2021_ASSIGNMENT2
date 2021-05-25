@@ -1,0 +1,68 @@
+---
+#Create directory for harvester path
+- name: mkdir /harvester
+  tags: 'harvester'
+  become: yes
+  file:
+    path: "{{ harvester_path }}"
+    state: directory
+    recurse: yes
+
+#Move harvester_search_allcities.py file from template to server
+- name: move harvester_search_allcities files to server 
+  tags: 'harvester'
+  become: yes
+  template:
+    src: 'harvester_search_allcities.py'
+    dest: "{{ harvester_path }}"
+
+#Move tw_cdb_credentials.py file from template to server
+- name: move tw_cdb_credentials files to server 
+  tags: 'harvester'
+  become: yes
+  template:
+    src: 'tw_cdb_credentials.py'
+    dest: "{{ harvester_path }}"
+
+#Move requirements.txt file from template to server
+- name: move requirements files to server 
+  tags: 'harvester'
+  become: yes
+  template:
+    src: 'requirements.txt'
+    dest: "{{ harvester_path }}"
+
+#Move Dockerfile file from template to server
+- name: move Dockerfile files to server 
+  tags: 'harvester'
+  become: yes
+  template:
+    src: 'Dockerfile'
+    dest: "{{ harvester_path }}"
+
+
+#Move cron_harvest file from template to server
+- name: move cron_harvest files to server 
+  tags: 'scheduler'
+  become: yes
+  template:
+    src: 'cron_harvest'
+    dest: "{{ cron_env }}"
+
+- name: traverse into the harvester directory.
+  become: yes
+  shell: cd
+  args:
+    chdir: "{{ harvester_path }}"
+
+- name: Build Twitter Harvester container 
+  script: ./setup-harvester.sh 
+  register: Harvester
+
+- name: Set up Twitter Harvester scheduler 
+  script: ./setup-scheduler.sh 
+  register: scheduler
+
+
+
+

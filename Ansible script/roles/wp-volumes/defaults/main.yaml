@@ -1,5 +1,0 @@
----
-
-- volumes:
-  - mountpoint: /var/lib/docker
-  - mountpoint: /data

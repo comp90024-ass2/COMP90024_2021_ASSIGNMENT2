@@ -1,0 +1,19 @@
+#deploy twitter harvester to instances
+- hosts: slavesDB
+  vars_files:
+    - host_vars/harvester_var.yaml
+  gather_facts: true
+
+  roles:
+    - role: harvester-docker 
+
+
+#deploy twitter transformation to instances
+- hosts: masterDB
+  vars_files:
+    - host_vars/harvester_var.yaml
+  gather_facts: true
+
+  roles:
+    - role: transformation-docker 
+ 

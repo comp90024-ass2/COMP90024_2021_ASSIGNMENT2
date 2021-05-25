@@ -1,0 +1,54 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+
+# Volume
+volumes:
+  - vol_name: web-vol-1
+    vol_size: 30
+
+
+# Security group
+security_groups:
+  - name: Add_ssh
+    description: "Add security group for SSH access"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+  - name: Add_http (port 80)
+    description: "Add security group for HTTP port (80)"
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+  - name: Add_couchDB port 
+    description: "Add couchDB port (5984)"
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    remote_ip_prefix: 0.0.0.0/0
+  - name: Add_couchDB port 
+    description: "Add couchDB port (4369)"
+    protocol: tcp
+    port_range_min: 4369
+    port_range_max: 4369
+    remote_ip_prefix: 0.0.0.0/0
+  - name: Add_couchDB port 
+    description: "Add couchDB port (9100-9200)"
+    protocol: tcp
+    port_range_min: 9100
+    port_range_max: 9200
+    remote_ip_prefix: 0.0.0.0/0
+
+# Instance
+instances:
+  - name: frontend master-1
+    volumes: web-vol-1
+    meta:
+      group: web
+
+
+instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
+instance_key_name: cloud-ass2
+instance_flavor: uom.mse.1c4g
+

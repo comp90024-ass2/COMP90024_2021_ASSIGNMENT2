@@ -1,0 +1,48 @@
+label {
+    margin-left: 100px;
+}
+
+div {
+    text-align: center;
+}
+
+#chart {
+    margin: 0;
+    background: #f9f9f9;
+    padding: 10px;
+}
+
+#chart ul {
+    display: flex;
+    list-style: none;
+}
+
+#chart li {
+    margin: 12px 12px 0 12px;
+}
+
+Link {
+    text-decoration: none;
+    color: #8f8f8f;
+    font-size: 24px;
+    font-weight: 400;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.attempt-1 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+}
+
+.attempt-1 em {
+    font-style: normal;
+    padding: 0.1em 0.3em;
+    border-radius: 0.2em;
+    position: relative;
+    background: white;
+    background: linear-gradient(to right, mediumturquoise, mediumpurple);
+    transform: skewX(-5deg);
+    display: inline-block;
+}

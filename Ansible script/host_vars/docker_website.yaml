@@ -1,0 +1,11 @@
+---
+#set up server env
+server_env: /etc/environment
+docker_env: /etc/systemd/system/docker.service.d
+
+# Volume
+volumes:
+  - device: /dev/vdb
+    mountpoint: /var/lib/react
+  
+
