@@ -9,7 +9,7 @@
     recurse: yes
 
 #Move dataprocessing.py file from template to server
-- name: move harvester_search_allcities files to server 
+- name: move dataprocessing files to server 
   tags: 'transform'
   become: yes
   template:
@@ -65,7 +65,7 @@
 
 - name: Build Twitter Data Transformation container 
   script: ./setup-data_transform.sh
-  register: Harvester
+  register: transformer
 
 - name: Set up Twitter Data Transformation scheduler 
   script: ./setup-data_tran_scheduler.sh
