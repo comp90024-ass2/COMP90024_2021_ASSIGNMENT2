@@ -193,7 +193,7 @@ function BarHappy() {
                                 fontSize={12}
                                 textAnchor={"middle"}
                             >
-                                {d.y.toFixed(0)}
+                                {d.y}
                             </text>
                         </g>
                     );

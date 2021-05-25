@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import './BarChart.css';
+import request from '../../utils/request'
 
 const margin = {
     top: 20,
@@ -14,27 +15,35 @@ const HEIGHT = 300;
 
 const data = [
     {
-        x: "Melbourne",
-        y: 4430
+        x: "Melbourne (C)",
+        y: 3200
     },
     {
-        x: "Sydney",
-        y: 5240
+        x: "Sydney (C)",
+        y: 2000
     },
     {
-        x: "Brisbane",
-        y: 3342
+        x: "Brisbane (C)",
+        y: 2500
     },
     {
-        x: "Perth",
-        y: 3635
+        x: "Adelaide (C)",
+        y: 1900
     },
     {
-        x: "Adelaide",
-        y: 3745
+        x: "Perth (C)",
+        y: 2900
     }
 ];
-
+const data2 = () => request.post('/income_cities/_find', {
+	"selector": {
+       
+    },
+    "fields": ["lga_name16", "gini_coefficient_no" ],
+    "limit": 10,
+    "skip": 0,
+    "execution_stats": true
+})
 function BarSpent() {
     const chartWidth = WIDTH - margin.left - margin.right;
     const chartHeight = HEIGHT - margin.top - margin.bottom;
@@ -43,21 +52,30 @@ function BarSpent() {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        const t = d3.transition().duration(1000);
-
-        t.tween("height", () => {
-            let interpolates = data.map((d, i) => {
-                let start = (value[i] && value[i].y) || 0;
-                return d3.interpolateNumber(start, d.y);
+        data2().then(response => {
+            const t = d3.transition().duration(1000);
+            let data3 = []
+            response.data.docs.forEach(element => {
+                data3.push({
+                    x: element.lga_name16,
+                    y: element.gini_coefficient_no
+                })
             });
-            return t => {
-                let newData = data.map((d, i) => {
-                    return { ...d, y: interpolates[i](t) };
+            t.tween("height", () => {
+                let interpolates = data3.map((d, i) => {
+                    let start = (value[i] && value[i].y) || 0;
+                    return d3.interpolateNumber(start, d.y);
                 });
-
-                setValue(newData);
-            };
-        });
+                return t => {
+                    let newData = data3.map((d, i) => {
+                        return { ...d, y: interpolates[i](t) };
+                    });
+                    setValue(newData);
+                };
+            });
+        }).catch((err) =>{
+            console.log(err)
+        })
     }, []);
 
     const xScale = d3
@@ -72,7 +90,7 @@ function BarSpent() {
 
     const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(data.map(d => d.y))])
+        .domain([0.4, 0.7])
         .range([chartHeight, 0])
         .nice();
 
@@ -155,7 +173,7 @@ function BarSpent() {
                                 fontSize={12}
                                 textAnchor={"middle"}
                             >
-                                {d.y.toFixed(0)}
+                                {d.y}
                             </text>
                         </g>
                     );

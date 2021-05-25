@@ -99,7 +99,7 @@ function BarUnemployment() {
 
     const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(data.map(d => d.y))])
+        .domain([0, 12])
         .range([chartHeight, 0])
         .nice();
 
@@ -182,7 +182,7 @@ function BarUnemployment() {
                                 fontSize={12}
                                 textAnchor={"middle"}
                             >
-                                {d.y.toFixed(0)}
+                                {d.y}
                             </text>
                         </g>
                     );
