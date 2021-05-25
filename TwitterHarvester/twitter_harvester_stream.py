@@ -6,10 +6,12 @@ from tweepy import Stream
 import json
 import tw_cdb_credentials
 import time
-from datetime import timedelta
+from http.client import IncompleteRead
+import logging
+import datetime as DT
 import couchdb
+import sys
 
-#twitter auth
 consumer_key = tw_cdb_credentials.consumer_key
 consumer_secret = tw_cdb_credentials.consumer_secret
 access_token = tw_cdb_credentials.access_token
@@ -20,16 +22,16 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
-#couchdb connect
+# == couchdb ==
 couch = couchdb.Server(url=tw_cdb_credentials.url)
-couch.resource.credentials =tw_cdb_credentials.login
-db = couch[tw_cdb_credentials.dbname]
+couch.resource.credentials = tw_cdb_credentials.login
 
-dbmelb = couch['twitter_melbourne']
-dbsyd = couch['twitter_sydney']
-dbbris = couch['twitter_brisbane']
-dbperth = couch['twitter_perth']
-dbade = couch['twitter_adelaide']
+dbtwitter = couch['twitter']
+
+logfile = "Stream " + DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
+
+logging.basicConfig(filename=logfile, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 class Point:
 
@@ -65,23 +67,25 @@ class StdOutListener(StreamListener):
         else:
          self.tweet_count+=1
          if(self.tweet_count==self.max_tweets):
-            print("completed")
+            logging.info("completed")
             endtime = time.time()
-            print("Runtime of the program is: ",timedelta(seconds=endtime-starttime))
-            print("Stream tweets from Melbourne is ", self.mcount*100/(self.max_tweets-1))
-            print("Stream tweets from Sydney is ", self.scount*100/(self.max_tweets-1))
-            print("Stream tweets from Brisbane is ", self.bcount*100/(self.max_tweets-1))
-            print("Stream tweets from Perth is ", self.pcount*100/(self.max_tweets-1))
-            print("Stream tweets from Adelaide is ", self.acount*100/(self.max_tweets-1))
-            print("Stream tweets from other regions is ", (self.max_tweets-1-self.mcount-self.scount-self.bcount-self.pcount-self.acount)*100/(self.max_tweets-1), "%")
-            print("User timeline tweets is ",self.timeline_tweets_inserted)
+            logging.info("Runtime of the program is: "+ str(DT.timedelta(seconds=endtime-starttime)))
+            logging.info("Stream tweets from Melbourne is " + str(self.mcount*100/(self.max_tweets-1)))
+            logging.info("Stream tweets from Sydney is " + str(self.scount*100/(self.max_tweets-1)))
+            logging.info("Stream tweets from Brisbane is " + str(self.bcount*100/(self.max_tweets-1)))
+            logging.info("Stream tweets from Perth is " + str(self.pcount*100/(self.max_tweets-1)))
+            logging.info("Stream tweets from Adelaide is " + str(self.acount*100/(self.max_tweets-1)))
+            logging.info("Stream tweets from other regions is " + str((self.max_tweets-1-self.mcount-self.scount-self.bcount-self.pcount-self.acount)*100/(self.max_tweets-1)), "%")
+            logging.info("User timeline tweets is " + str(self.timeline_tweets_inserted))
             return(False)
          else:
             decoded = json.loads(data)
-            print("Tweet ",self.tweet_count," of ",self.max_tweets-1)
+            logging.info("Tweet " + str(self.tweet_count) + " of " + str(self.max_tweets-1))
             if(self.tweet_count % 50 == 49):
                 endtime = time.time()
-                print("Runtime of the program is: ",timedelta(seconds=endtime-starttime))
+                logging.info("Runtime of the program is: " + str(DT.timedelta(seconds=endtime-starttime)))
+                logging.info("Stream tweets is " + str(self.mcount+self.scount+self.bcount+self.pcount+self.acount))
+                logging.info("User timeline tweets is " + str(self.timeline_tweets_inserted))
             json_load = json.loads(data)
             tbl = json_load['place']['bounding_box']['coordinates'][0][0]
             tur = json_load['place']['bounding_box']['coordinates'][0][3]
@@ -142,9 +146,9 @@ class StdOutListener(StreamListener):
                         'lang': json_load['lang'],
                         }
                 try:
-                    dbmelb.save(json.loads(json.dumps(text)))
-                    print("save tweet into Melbourne database")
-                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                    dbtwitter.save(json.loads(json.dumps(text)))
+                    logging.info("save tweet into Melbourne database")
+                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=21,max_id=json_load['id_str'])
                     for tweet_user in tweets_user:
                         tweetstr = json.dumps(tweet_user._json)
                         json_load = json.loads(tweetstr)
@@ -168,13 +172,13 @@ class StdOutListener(StreamListener):
                                 'lang': json_load['lang'],
                                 }
                         try:
-                            dbmelb.save(json.loads(json.dumps(text)))
-                            print("save user timeline tweet")
+                            dbtwitter.save(json.loads(json.dumps(text)))
+                            logging.info("save user timeline tweet")
                             self.timeline_tweets_inserted = self.timeline_tweets_inserted + 1
                         except couchdb.http.ResourceConflict:
-                            print("duplicate user timeline tweet")
+                            logging.info("duplicate user timeline tweet")
                 except couchdb.http.ResourceConflict:
-                    print("duplicate stream tweet")
+                    logging.info("duplicate stream tweet")
             elif(rtw.intersects(rsy)):
                 self.scount = self.scount + 1
                 user = {'id_str': json_load['user']['id_str'],
@@ -197,9 +201,9 @@ class StdOutListener(StreamListener):
                         'lang': json_load['lang'],
                         }
                 try:
-                    dbsyd.save(json.loads(json.dumps(text)))
-                    print("save tweet into Sydney database")
-                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                    dbtwitter.save(json.loads(json.dumps(text)))
+                    logging.info("save tweet into Sydney database")
+                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=21,max_id=json_load['id_str'])
                     for tweet_user in tweets_user:
                         tweetstr = json.dumps(tweet_user._json)
                         json_load = json.loads(tweetstr)
@@ -223,13 +227,13 @@ class StdOutListener(StreamListener):
                                 'lang': json_load['lang'],
                                 }
                         try:
-                            dbsyd.save(json.loads(json.dumps(text)))
-                            print("save user timeline tweet")
+                            dbtwitter.save(json.loads(json.dumps(text)))
+                            logging.info("save user timeline tweet")
                             self.timeline_tweets_inserted = self.timeline_tweets_inserted + 1
                         except couchdb.http.ResourceConflict:
-                            print("duplicate user timeline tweet")
+                            logging.info("duplicate user timeline tweet")
                 except couchdb.http.ResourceConflict:
-                    print("duplicate stream tweet")
+                    logging.info("duplicate stream tweet")
             if(rtw.intersects(rbr)):
                 self.bcount = self.bcount + 1
                 user = {'id_str': json_load['user']['id_str'],
@@ -252,9 +256,9 @@ class StdOutListener(StreamListener):
                         'lang': json_load['lang'],
                         }
                 try:
-                    dbbris.save(json.loads(json.dumps(text)))
-                    print("save tweet into Brisbane database")
-                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                    dbtwitter.save(json.loads(json.dumps(text)))
+                    logging.info("save tweet into Brisbane database")
+                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=21,max_id=json_load['id_str'])
                     for tweet_user in tweets_user:
                         tweetstr = json.dumps(tweet_user._json)
                         json_load = json.loads(tweetstr)
@@ -278,13 +282,13 @@ class StdOutListener(StreamListener):
                                 'lang': json_load['lang'],
                                 }
                         try:
-                            dbbris.save(json.loads(json.dumps(text)))
-                            print("save user timeline tweet")
+                            dbtwitter.save(json.loads(json.dumps(text)))
+                            logging.info("save user timeline tweet")
                             self.timeline_tweets_inserted = self.timeline_tweets_inserted + 1
                         except couchdb.http.ResourceConflict:
-                            print("duplicate user timeline tweet")
+                            logging.info("duplicate user timeline tweet")
                 except couchdb.http.ResourceConflict:
-                    print("duplicate stream tweet")
+                    logging.info("duplicate stream tweet")
             if(rtw.intersects(rpe)):
                 self.pcount = self.pcount + 1
                 user = {'id_str': json_load['user']['id_str'],
@@ -307,9 +311,9 @@ class StdOutListener(StreamListener):
                         'lang': json_load['lang'],
                         }
                 try:
-                    dbperth.save(json.loads(json.dumps(text)))
-                    print("save tweet into Perth database")
-                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                    dbtwitter.save(json.loads(json.dumps(text)))
+                    logging.info("save tweet into Perth database")
+                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=21,max_id=json_load['id_str'])
                     for tweet_user in tweets_user:
                         tweetstr = json.dumps(tweet_user._json)
                         json_load = json.loads(tweetstr)
@@ -333,13 +337,13 @@ class StdOutListener(StreamListener):
                                 'lang': json_load['lang'],
                                 }
                         try:
-                            dbperth.save(json.loads(json.dumps(text)))
-                            print("save user timeline tweet")
+                            dbtwitter.save(json.loads(json.dumps(text)))
+                            logging.info("save user timeline tweet")
                             self.timeline_tweets_inserted = self.timeline_tweets_inserted + 1
                         except couchdb.http.ResourceConflict:
-                            print("duplicate user timeline tweet")
+                            logging.info("duplicate user timeline tweet")
                 except couchdb.http.ResourceConflict:
-                    print("duplicate stream tweet")
+                    logging.info("duplicate stream tweet")
             if(rtw.intersects(rad)):
                 self.acount = self.acount + 1
                 user = {'id_str': json_load['user']['id_str'],
@@ -362,9 +366,9 @@ class StdOutListener(StreamListener):
                         'lang': json_load['lang'],
                         }
                 try:
-                    dbade.save(json.loads(json.dumps(text)))
-                    print("save tweet into Adelaide database")
-                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=15,max_id=json_load['id_str'])
+                    dbtwitter.save(json.loads(json.dumps(text)))
+                    logging.info("save tweet into Adelaide database")
+                    tweets_user = api.user_timeline(id=json_load['user']['id_str'],count=21,max_id=json_load['id_str'])
                     for tweet_user in tweets_user:
                         tweetstr = json.dumps(tweet_user._json)
                         json_load = json.loads(tweetstr)
@@ -388,16 +392,16 @@ class StdOutListener(StreamListener):
                                 'lang': json_load['lang'],
                                 }
                         try:
-                            dbade.save(json.loads(json.dumps(text)))
-                            print("save user timeline tweet")
+                            dbtwitter.save(json.loads(json.dumps(text)))
+                            logging.info("save user timeline tweet")
                             self.timeline_tweets_inserted = self.timeline_tweets_inserted + 1
                         except couchdb.http.ResourceConflict:
-                            print("duplicate user timeline tweet")
+                            logging.info("duplicate user timeline tweet")
                 except couchdb.http.ResourceConflict:
-                    print("duplicate stream tweet")
+                    logging.info("duplicate stream tweet")
     
     def on_error(self,status):
-        print(status)
+        logging.info(status)
         
 if __name__ == "__main__":
     starttime = time.time()
@@ -405,5 +409,8 @@ if __name__ == "__main__":
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     
-    stream = Stream(auth,listener)
-    stream.filter(locations=[113.338953078,-43.6345972634,153.569469029,-10.6681857235])
+    try:
+        stream = Stream(auth,listener)
+        stream.filter(locations=[113.338953078,-43.6345972634,153.569469029,-10.6681857235])
+    except IncompleteRead:
+        logging.warning("Incomplete read")
