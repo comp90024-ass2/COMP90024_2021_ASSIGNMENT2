@@ -36,8 +36,7 @@ const data = [
         y: 2900
     }
 ];
-//const data2 = () => request.get('/income_cities/_all_docs')
-const data2 = () => request.post('http://172.26.131.86:5984/income_cities/_find', {
+const data2 = () => request.post('/income_cities/_find', {
 	"selector": {
        
     },
@@ -59,7 +58,6 @@ function BarIncome() {
         // let data5 = {}
         data2().then(response => {
             const t = d3.transition().duration(1000);
-            // console.log(response.data.docs)
             let data3 = []
             response.data.docs.forEach(element => {
                 console.log(element.lga_name16)
@@ -85,43 +83,11 @@ function BarIncome() {
                 };
             });
 
-
-            // for(let doc in response.data.docs){
-            //     console.log(doc)
-            //     // data3.push({x: doc.})
-            // }
-            // t.tween("height", () => {
-            // let interpolates = response.data.docs.map((d, i) => {
-                
-            //     let start = (value[i] && value[i].y) || 0;
-            //     console.log(value[i].y)
-            //     return d3.interpolateNumber(start, d.mean_aud);
-            // });
-            // return t => {
-            //     let newData = response.data.docs.map((d, i) => {
-            //         console.log(d)
-            //         return { ...d, y: interpolates[i](t) };
-            //     });
-            //     setValue(newData);
-            // };
-        // });
             
         }).catch((err) =>{
             console.log(err)
           })
-        // t.tween("height", () => {
-        //     let interpolates = data.map((d, i) => {
-        //         let start = (value[i] && value[i].y) || 0;
-        //         return d3.interpolateNumber(start, d.y);
-        //     });
-        //     return t => {
-        //         let newData = data.map((d, i) => {
-        //             return { ...d, y: interpolates[i](t) };
-        //         });
 
-        //         setValue(newData);
-        //     };
-        // });
     }, []);
 
     const xScale = d3

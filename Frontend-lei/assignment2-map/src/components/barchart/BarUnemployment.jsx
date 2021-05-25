@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import './BarChart.css';
+import request from '../../utils/request'
 
 const margin = {
     top: 20,
@@ -14,26 +15,36 @@ const HEIGHT = 300;
 
 const data = [
     {
-        x: "Melbourne",
+        x: "Greater Melbourne",
         y: 12
     },
     {
-        x: "Sydney",
+        x: "Greater Sydney",
         y: 15
     },
     {
-        x: "Brisbane",
+        x: "Greater Brisbane",
         y: 20
     },
     {
-        x: "Perth",
+        x: "Greater Perth",
         y: 13
     },
     {
-        x: "Adelaide",
+        x: "Greater Adelaide",
         y: 13
     }
 ];
+
+const data2 = () => request.post('/unemployment/_find', {
+	"selector": {
+       
+    },
+    "fields": ["gccsa_name_2016", "unemp_rt_15"],
+    "limit": 10,
+    "skip": 0,
+    "execution_stats": true
+})
 
 function BarUnemployment() {
     const chartWidth = WIDTH - margin.left - margin.right;
@@ -43,21 +54,40 @@ function BarUnemployment() {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        const t = d3.transition().duration(1000);
-
-        t.tween("height", () => {
-            let interpolates = data.map((d, i) => {
-                let start = (value[i] && value[i].y) || 0;
-                return d3.interpolateNumber(start, d.y);
+        // const t = d3.transition().duration(1000);
+        
+        data2().then(response => {
+            const t = d3.transition().duration(1000);
+            let data3 = []
+            response.data.docs.forEach(element => {
+                console.log(element.gccsa_name_2016)
+                console.log(element.unemp_rt_15)
+                data3.push({
+                    x: element.gccsa_name_2016,
+                    y: element.unemp_rt_15
+                })
             });
-            return t => {
-                let newData = data.map((d, i) => {
-                    return { ...d, y: interpolates[i](t) };
-                });
+            console.log(data3)
 
-                setValue(newData);
-            };
-        });
+            t.tween("height", () => {
+                let interpolates = data3.map((d, i) => {
+                    let start = (value[i] && value[i].y) || 0;
+                    return d3.interpolateNumber(start, d.y);
+                });
+                return t => {
+                    let newData = data3.map((d, i) => {
+                        return { ...d, y: interpolates[i](t) };
+                    });
+
+                    setValue(newData);
+                };
+            });
+
+            
+        }).catch((err) =>{
+            console.log(err)
+          })
+
     }, []);
 
     const xScale = d3

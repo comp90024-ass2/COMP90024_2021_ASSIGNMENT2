@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import './BarChart.css';
+import axios from "axios";
+import request from '../../utils/request';
+import { chordTranspose } from "d3";
 
 const margin = {
     top: 20,
@@ -32,6 +35,14 @@ const data = [
     {
         x: "Adelaide",
         y: 90
+    },
+    {
+        x: "Hobart",
+        y: 70
+    },
+    {
+        x: "Darwin",
+        y:70
     }
 ];
 
@@ -42,22 +53,69 @@ function BarHappy() {
     const [value, setValue] = useState(() => data.map(d => ({ ...d, y: 0 })));
     const svgRef = useRef(null);
 
+    const hobart = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Hobart","en"]', {})
+    const melbourne = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Melbourne","en"]', {})
+    const sydney = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Sydney","en"]', {})
+    const adelaide = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Adelaide","en"]', {})
+    const perth = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Perth","en"]', {})
+    const darwin = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Darwin","en"]', {})
+    const brisbane = request.get('/twitter_re/_design/happiness/_view/city_lang?key=["Brisbane","en"]', {})
+
+    
     useEffect(() => {
+        // data2().then(response => {console.log(response)})
         const t = d3.transition().duration(1000);
-
-        t.tween("height", () => {
-            let interpolates = data.map((d, i) => {
-                let start = (value[i] && value[i].y) || 0;
-                return d3.interpolateNumber(start, d.y);
-            });
-            return t => {
-                let newData = data.map((d, i) => {
-                    return { ...d, y: interpolates[i](t) };
+        axios
+        .all([hobart, melbourne, sydney, adelaide, perth, darwin, brisbane])
+        .then(
+            axios.spread((...responses) => {
+                let city_list = ["Hobart", "Melbourne", "Sydney", "Adelaide", "Perth", "Darwin", "Brisbane"]
+                const t = d3.transition().duration(1000);
+                let data3 = []
+                let index = 0
+                responses.forEach(element => {
+                    // console.log(element.data.rows[0].value[0])
+                    // console.log(city_list[index])
+                    
+                    console.log(element.mean_aud)
+                    data3.push({
+                        x: city_list[index],
+                        y: element.data.rows[0].value[0]
+                    })
+                    index += 1
                 });
+                console.log(data3)
+    
+                t.tween("height", () => {
+                    let interpolates = data3.map((d, i) => {
+                        let start = (value[i] && value[i].y) || 0;
+                        return d3.interpolateNumber(start, d.y);
+                    });
+                    return t => {
+                        let newData = data3.map((d, i) => {
+                            return { ...d, y: interpolates[i](t) };
+                        });
+    
+                        setValue(newData);
+                    };
+                });
+                console.log(responses[0])
+                // console.log(responses[1])
+            }))
+        .catch(error => {console.log(error)})
+        // t.tween("height", () => {
+        //     let interpolates = data.map((d, i) => {
+        //         let start = (value[i] && value[i].y) || 0;
+        //         return d3.interpolateNumber(start, d.y);
+        //     });
+        //     return t => {
+        //         let newData = data.map((d, i) => {
+        //             return { ...d, y: interpolates[i](t) };
+        //         });
 
-                setValue(newData);
-            };
-        });
+        //         setValue(newData);
+        //     };
+        // });
     }, []);
 
     const xScale = d3
@@ -72,7 +130,7 @@ function BarHappy() {
 
     const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(data.map(d => d.y))])
+        .domain([-0.5, 0.5])
         .range([chartHeight, 0])
         .nice();
 
