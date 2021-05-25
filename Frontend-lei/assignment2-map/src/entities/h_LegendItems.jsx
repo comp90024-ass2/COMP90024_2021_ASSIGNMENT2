@@ -4,20 +4,20 @@ var h_legendItems = [
     new LegendItem(
         "0.7 +",
         "#741f1f",
-        (cases) => cases >= 0.7,
+        (cases) => cases >= 0.5,
         "white"
     ),
 
     new LegendItem(
         "0.4 - 0.7",
         "#c57f7f",
-        (cases) => cases >= 0.4 && cases < 0.7
+        (cases) => cases >= 0 && cases < 0.5
     ),
 
     new LegendItem(
         "0 - 0.4",
         "#d8aaaa",
-        (cases) => cases > 0 && cases < 0.4
+        (cases) => cases > -1 && cases < 0
     ),
 
     new LegendItem("No Data", "#ffffff", (cases) => true),
