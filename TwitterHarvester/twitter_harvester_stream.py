@@ -26,7 +26,7 @@ api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 couch = couchdb.Server(url=tw_cdb_credentials.url)
 couch.resource.credentials = tw_cdb_credentials.login
 
-dbtwitter = couch['twitter']
+dbtwitter = couch['twitter_raw']
 
 logfile = "Stream " + DT.datetime.today().strftime("%d-%b-%Y(%H-%M-%S.%f)") + ".log"
 
