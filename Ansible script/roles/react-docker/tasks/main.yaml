@@ -1,11 +1,11 @@
 ---
 #Clone git repo our project
 - name: clone git repo
-    become: yes
-    git:
-      repo: https://github.com/comp90024-ass2/COMP90024_2021_ASSIGNMENT2.git
-      dest: "{{ react_project_path }}"
-      force: yes
+  become: yes
+  git:
+    repo: https://github.com/comp90024-ass2/COMP90024_2021_ASSIGNMENT2.git
+    dest: "{{ react_project_path }}"
+    force: yes
 
 
 #Move .dockerignore file from template to server
