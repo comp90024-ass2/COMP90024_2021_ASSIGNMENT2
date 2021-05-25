@@ -34,9 +34,9 @@ function App() {
                     <li>
                         <Link to="/unemployment">Unemployment</Link>
                     </li>
-                    {/* <li>
-                        <Link to="/spent">Spent</Link>
-                    </li> */}
+                    <li>
+                        <Link to="/incomeCo">gini_coefficient_no</Link>
+                    </li>
                     <li>
                         <label>Map: </label>
                     </li>
@@ -79,9 +79,9 @@ function App() {
                         <BarUnemployment />
                     </div>
                 </Route>
-                <Route path="/spent">
+                <Route path="/incomeCo">
                     <div>
-                        <p className="attempt-1"><em>Average spent</em></p>
+                        <p className="attempt-1"><em>gini coefficient no</em></p>
                         <br></br>
                         <BarSpent />
                     </div>

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import './BarChart.css';
 import request from '../../utils/request'
-// const axios = require('axios');
 
 const margin = {
     top: 20,
@@ -181,7 +180,7 @@ function BarIncome() {
                                 fontSize={12}
                                 textAnchor={"middle"}
                             >
-                                {d.y.toFixed(0)}
+                                {d.y}
                             </text>
                         </g>
                     );
