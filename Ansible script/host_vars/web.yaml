@@ -45,7 +45,7 @@ instances:
   - name: frontend master-1
     volumes: web-vol-1
     meta:
-      group: web
+      group: websites
 
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
