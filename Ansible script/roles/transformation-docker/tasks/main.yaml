@@ -1,0 +1,76 @@
+---
+#Create directory for harvester path
+- name: mkdir /transform
+  tags: 'transform'
+  become: yes
+  file:
+    path: "{{ transform_path }}"
+    state: directory
+    recurse: yes
+
+#Move dataprocessing.py file from template to server
+- name: move harvester_search_allcities files to server 
+  tags: 'transform'
+  become: yes
+  template:
+    src: 'dataprocessing.py'
+    dest: "{{ transform_path }}"
+
+#Move tw_cdb_credentials.py file from template to server
+- name: move tw_cdb_credentials files to server 
+  tags: 'transform'
+  become: yes
+  template:
+    src: 'tw_cdb_credentials.py'
+    dest: "{{ transform_path }}"
+
+#Move requirements.txt file from template to server
+- name: move requirements files to server 
+  tags: 'transform'
+  become: yes
+  template:
+    src: 'requirements.txt'
+    dest: "{{ transform_path }}"
+
+#Move Dockerfile file from template to server
+- name: move Dockerfile files to server 
+  tags: 'transform'
+  become: yes
+  template:
+    src: 'Dockerfile'
+    dest: "{{ transform_path }}"
+
+#Move Dockerfile file from template to server
+- name: move Dockerfile files to server 
+  tags: 'transform'
+  become: yes
+  template:
+    src: 'AFINN.txt'
+    dest: "{{ transform_path }}"
+
+
+#Move cron_harvest file from template to server
+- name: move cron_transform files to server 
+  tags: 'scheduler'
+  become: yes
+  template:
+    src: 'cron_transform'
+    dest: "{{ cron_env }}"
+
+- name: traverse into the transformation directory.
+  become: yes
+  shell: cd
+  args:
+    chdir: "{{ transform_path }}"
+
+- name: Build Twitter Data Transformation container 
+  script: ./setup-data_transform.sh
+  register: Harvester
+
+- name: Set up Twitter Data Transformation scheduler 
+  script: ./setup-data_tran_scheduler.sh
+  register: scheduler
+
+
+
+

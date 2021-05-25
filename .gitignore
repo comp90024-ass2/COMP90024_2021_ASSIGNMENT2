@@ -1,3 +1,14 @@
-# dependencies
-/Frontend/assignment2-map/node_modules
+ 
+**/.DS_Store
 .DS_Store
+Ansible script/.DS_Store
+Ansible script/roles/.DS_Store
+Ansible script/roles/env-docker/.DS_Store
+Ansible script/roles/openstack-instance/.DS_Store
+Ansible script/.DS_Store
+Ansible script/roles/env-setup/.DS_Store
+Ansible script/roles/env-setup/.DS_Store
+Ansible script/.DS_Store
+Ansible script/roles/.DS_Store
+Ansible script/roles/env-setup/.DS_Store
+/Frontend/assignment2-map/node_modules

@@ -5,7 +5,7 @@
     name: '{{ item.name }}'
     image: '{{ instance_image }}'
     key_name: '{{ instance_key_name }}'
-    flavor: '{{ instance_flavor }}'
+    flavor: '{{ instance_flavor }}' 
     availability_zone: '{{ availability_zone }}'
     security_groups: '{{ sg_names }}'
     volumes: '{{ item.volumes }}'
@@ -33,7 +33,9 @@
 #Add hosts to Ansible in-memory inventory
 - name: Add host
   add_host:
-    name: '{{item.openstack.pulibc_v4}}'
-    group: COMP90024
-  loop: '{{os_instance.results}}'
+    name: '{{ item.openstack.public_v4 }}'
+    ansible_host: '{{ item.openstack.public_v4 }}'
+    groups: "{{ item['item']['meta']['group'] }}"
+  loop: '{{ os_instance.results }}'
   when: item.openstack is defined
+

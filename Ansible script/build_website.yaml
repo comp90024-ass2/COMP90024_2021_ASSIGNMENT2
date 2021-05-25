@@ -1,0 +1,8 @@
+ #deploy react app on website node instances
+- hosts: websites
+  vars_files:
+    - host_vars/website_var.yaml
+  gather_facts: true
+
+  roles:
+    - role: react-docker 

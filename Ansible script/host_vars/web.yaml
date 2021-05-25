@@ -3,12 +3,8 @@ availability_zone: melbourne-qh2-uom
 
 # Volume
 volumes:
-  - vol_name: database-master-vol-1
-    vol_size: 100
-  - vol_name: database-cluster-vol-1
-    vol_size: 100
-  - vol_name: database-cluster-vol-2
-    vol_size: 100
+  - vol_name: web-vol-1
+    vol_size: 30
 
 
 # Security group
@@ -46,21 +42,13 @@ security_groups:
 
 # Instance
 instances:
-  - name: database master-1
-    volumes: database-master-vol-1
+  - name: frontend master-1
+    volumes: web-vol-1
     meta:
-      group: masterDB
-  - name: database slaves-1
-    volumes: database-cluster-vol-1
-    meta:
-      group: slavesDB
-  - name: database slaves-2
-    volumes: database-cluster-vol-2
-    meta:
-      group: slavesDB
+      group: web
 
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
 instance_key_name: cloud-ass2
-instance_flavor: uom.mse.2c9g
+instance_flavor: uom.mse.1c4g
 

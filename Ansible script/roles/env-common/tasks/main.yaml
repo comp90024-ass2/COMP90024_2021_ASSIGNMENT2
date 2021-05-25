@@ -1,0 +1,36 @@
+---
+# Install dependencies
+- name: Gather facts of remote host
+  setup: 
+    gather_subset: all
+
+
+- name: Install dependencies
+  tags: always
+  become: yes
+  apt:
+    name: ['apt-transport-https','build-essential','python3-pip','ca-certificates','curl','gnupg-agent','software-properties-common','git','python3-dev','python3-setuptools','software-properties-common','unzip','vim','nodejs','npm','node-grunt-cli','jq']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Update pip
+  tags: always
+  become: yes
+  pip:
+    name: ['pip']
+    state: latest
+
+# pip install tweepy and CouchDB for Twitter Harvester
+- name: Install tweepy
+  pip:
+    name: ['tweepy', 'CouchDB']
+    state: latest
+
+# pip install tweepy and CouchDB for CouchDB
+- name: Install prerequisite for couchDB
+  tags: couchDB
+  become: yes
+  pip:
+    name: ['node','npm','grunt','jq']
+    state: latest
