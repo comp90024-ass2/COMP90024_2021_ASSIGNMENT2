@@ -1,7 +1,7 @@
  #deploy react app on website node instances
 - hosts: websites
   vars_files:
-    - host_vars/website_var.yaml
+    - host_vars/web_var.yaml
   gather_facts: true
 
   roles:
