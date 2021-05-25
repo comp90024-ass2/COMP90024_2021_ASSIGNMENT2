@@ -63,7 +63,6 @@ function BarHappy() {
 
     
     useEffect(() => {
-        // data2().then(response => {console.log(response)})
         const t = d3.transition().duration(1000);
         axios
         .all([hobart, melbourne, sydney, adelaide, perth, darwin, brisbane])
@@ -74,18 +73,13 @@ function BarHappy() {
                 let data3 = []
                 let index = 0
                 responses.forEach(element => {
-                    // console.log(element.data.rows[0].value[0])
-                    // console.log(city_list[index])
                     
-                    console.log(element.mean_aud)
                     data3.push({
                         x: city_list[index],
                         y: element.data.rows[0].value[0]
                     })
                     index += 1
-                });
-                console.log(data3)
-    
+                });    
                 t.tween("height", () => {
                     let interpolates = data3.map((d, i) => {
                         let start = (value[i] && value[i].y) || 0;
@@ -99,23 +93,9 @@ function BarHappy() {
                         setValue(newData);
                     };
                 });
-                console.log(responses[0])
-                // console.log(responses[1])
             }))
         .catch(error => {console.log(error)})
-        // t.tween("height", () => {
-        //     let interpolates = data.map((d, i) => {
-        //         let start = (value[i] && value[i].y) || 0;
-        //         return d3.interpolateNumber(start, d.y);
-        //     });
-        //     return t => {
-        //         let newData = data.map((d, i) => {
-        //             return { ...d, y: interpolates[i](t) };
-        //         });
 
-        //         setValue(newData);
-        //     };
-        // });
     }, []);
 
     const xScale = d3

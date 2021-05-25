@@ -4,20 +4,20 @@ var i_legendItems = [
     new LegendItem(
         "3,500 +",
         "#741f1f",
-        (cases) => cases >= 3_500,
+        (cases) => cases >= 75_000,
         "white"
     ),
 
     new LegendItem(
         "2,500 - 3,499",
         "#c57f7f",
-        (cases) => cases >= 2_500 && cases < 3_500
+        (cases) => cases >= 65_000 && cases < 75_000
     ),
 
     new LegendItem(
         "0 - 2,499",
         "#d8aaaa",
-        (cases) => cases > 0 && cases < 2_500
+        (cases) => cases > 0 && cases < 65_000
     ),
 
     new LegendItem("No Data", "#ffffff", (cases) => true),

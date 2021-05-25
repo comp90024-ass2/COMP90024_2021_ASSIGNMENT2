@@ -54,20 +54,16 @@ function BarIncome() {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        // const t = d3.transition().duration(1000);
-        // let data5 = {}
+
         data2().then(response => {
             const t = d3.transition().duration(1000);
             let data3 = []
             response.data.docs.forEach(element => {
-                console.log(element.lga_name16)
-                console.log(element.mean_aud)
                 data3.push({
                     x: element.lga_name16,
                     y: element.mean_aud
                 })
             });
-            console.log(data3)
 
             t.tween("height", () => {
                 let interpolates = data3.map((d, i) => {
@@ -86,7 +82,7 @@ function BarIncome() {
             
         }).catch((err) =>{
             console.log(err)
-          })
+        })
 
     }, []);
 

@@ -54,20 +54,17 @@ function BarUnemployment() {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        // const t = d3.transition().duration(1000);
         
         data2().then(response => {
             const t = d3.transition().duration(1000);
             let data3 = []
             response.data.docs.forEach(element => {
-                console.log(element.gccsa_name_2016)
-                console.log(element.unemp_rt_15)
+
                 data3.push({
                     x: element.gccsa_name_2016,
                     y: element.unemp_rt_15
                 })
             });
-            console.log(data3)
 
             t.tween("height", () => {
                 let interpolates = data3.map((d, i) => {

@@ -34,9 +34,9 @@ function App() {
                     <li>
                         <Link to="/unemployment">Unemployment</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/spent">Spent</Link>
-                    </li>
+                    </li> */}
                     <li>
                         <label>Map: </label>
                     </li>
@@ -46,12 +46,12 @@ function App() {
                     <li>
                         <Link to="/i-map">Income</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/u-map">Unemployment</Link>
                     </li>
                     <li>
                         <Link to="/s-map">Spent</Link>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
 
