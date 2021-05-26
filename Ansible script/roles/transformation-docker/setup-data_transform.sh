@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd transform
+
 echo "Build docker images......"
 sudo docker build -t twitter_transform .
 
